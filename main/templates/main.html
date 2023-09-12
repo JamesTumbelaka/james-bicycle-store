@@ -4,48 +4,127 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>
-            Store
+            Bicycle Store
         </title>
         <style type="text/css">
             p {
                 color: red;
                 font-weight: bold;
             }
+            .sub {
+                color: black;
+                text-align: center;
+            }
             h1 {
                 color: white;
                 text-align: center;
+                border-style: solid;
+                border-color: white;
+                background-color: black;
+                font-family: 'Times New Roman', Times, serif;
+                font-weight: bold;
+                margin-left: 265px;
+                margin-right: 265px;
+                padding: 10px;
             }
             h3 {
+                color: black;
+            }
+            .box {
+                border: 2px solid black;
+                border-collapse: collapse; 
+                border-spacing: 0;
+                margin-left: auto; 
+                margin-right: auto;
+            }
+            .box td {
+                border-color: black; 
+                border-style: solid; 
+                border-width: 2px; 
+                font-family: 'Times New Roman', Times, serif; 
+                font-size: 14px;
+                overflow: hidden; 
+                padding: 10px 5px; 
+                word-break: normal;
+                text-align: center;
+                background-color: white;
+            }
+            .box th {
+                border-color: black; 
+                border-style: solid; 
+                border-width: 2px; 
+                font-family: 'Times New Roman', Times, serif; 
+                font-size: 16px;
+                font-weight: bold; 
                 color: white;
+                overflow: hidden; 
+                padding: 10px 5px; 
+                word-break: normal;
+                text-align: center;
+                background-color: rgb(38, 36, 36);
+            }
+            .box .box-799k {
+                background-color: #656565; 
+                border-color: #343434; 
+                color: #ffffff;
+                font-family: 'Times New Roman', Times, serif; 
+                text-align: center; 
+                vertical-align: top
             }
             .marquee-container {
                 position: fixed;
                 bottom: 0;
                 left: 0;
                 width: 100%;
-                background-color: rgb(101, 104, 109);
+                background-color: black;
                 text-align: left;
                 white-space: nowrap;
                 overflow: hidden; 
             }
             body {
                 font-family: 'Times New Roman', Times, serif;
-                background-color: black;
+                background-color: rgb(223, 213, 213);
                 overflow: hidden;
             }
         </style>
     </head>
     <body>
-        <h1>James Bicycle Store</h1>
+        <h1>JAMES BICYCLE STORE</h1>
         <h3>Nama: </h3>
         <p>{{ name }}</p>
         <h3>Kelas: </h3>
         <p>{{ class }}</p>
+        <table class="box">
+            <thead>
+                <tr>
+                    <th class="box-0lax">Nama</th>
+                    <th class="box-0lax">Tahun Produksi</th>
+                    <th class="box-0lax">Gambar</th>
+                    <th class="box-0lax">Harga</th>
+                    <th class="box-0lax">Deskripsi</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="box-0lax">Brompton CHPT3</td>
+                    <td class="box-0lax">2019</td>
+                    <td class="box-0lax"><img src="https://images.tokopedia.net/img/cache/700/VqbcmM/2021/2/16/866e5cab-3933-4174-a155-46ddb88bdec0.jpg" width="192" height="108"></td>
+                    <td class="box-0lax">Rp 75.000.000</td>
+                    <td class="box-0lax">Sepeda Lipat</td>
+                </tr>
+                <tr>
+                    <td class="box-0lax">Pinarello Dogma F</td>
+                    <td class="box-0lax">2022</td>
+                    <td class="box-0lax"><img src="https://www.ngopibareng.id/images/uploads/2021/2021-06-25/ini-dia-pinarello-dogma-f-lebih-ringan-dan-aerodinamis--01" width="192" height="108"></td>
+                    <td class="box-0lax">Rp 200.000.000</td>
+                    <td class="box-0lax">Sepeda Balap</td>
+                </tr>
+            </tbody>
+        </table>
         <div class="marquee-container">
-            <marquee behavior="scroll" direction="right" style="color: white ; font-size: 25px;" class="marquee-container" scrollamount="20">
+            <marquee behavior="scroll" direction="right" style="color: white ; font-size: 20px;" class="marquee-container" scrollamount="15">
                 Selamat Datang di Toko Kami !
             </marquee>
         </div>
-        
     </body>
 </html>
