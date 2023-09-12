@@ -110,7 +110,8 @@ urlpatterns = [
 8. Tulis nama aplikasi yang diinginkan dan centang bagian `HTTP Listener on PORT` dan klik `Deploy App` untuk memulai *deployment*.
 
 # *Request client* ke web aplikasi berbasis Django beserta responnya
-![DJango Framework]
+![Diagram](https://github.com/JamesTumbelaka/james-bicycle-store/assets/119837499/6d389dca-b19d-4a56-8fea-1b95d4cb93e5)
+
 Pertama, *user* atau *client* akan meminta akses atau *resource*. Django akan kemudian akan memproses URL dari *client* dan menyesuaikannya sesuai dengan file `urls.py` (URL Mapping).
 Kedua, Django akan akan membuka file `views.py` dan meminta tampilan. 
 File `models.py` kemudian menangani data yang terkait permintaan pengguna dan folder `template` akan berisi file dengan ekstension html. File yang berisi ekstension html tersebut akan berisi kode-kode html untuk mengatur tulisan, tabel, ukuran, dan lainnya. Setelah selesai diproses, tampilan akan diberikan ke *client* atau *user*.
