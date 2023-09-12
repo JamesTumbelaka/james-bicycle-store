@@ -1,6 +1,40 @@
-<h1>Selamat Datang di James' Bicycle Store !</h1>
-
-<h5>Name: </h5>
-<p>{{ name }}</p>
-<h5>Class: </h5>
-<p>{{ class }}</p>
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            p {
+                color: red;
+                font-weight: bold;
+            }
+            h1 {
+                color: white;
+                text-align: center;
+            }
+            h3 {
+                color: white;
+            }
+            .bottom-marquee {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                background-color: blue;
+            }
+            body {
+                font-family: 'Times New Roman', Times, serif;
+                background-color: black;
+                overflow: hidden;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>James Bicycle Store</h1>
+        <h3>Nama: </h3>
+        <p>{{ name }}</p>
+        <h3>Kelas: </h3>
+        <p>{{ class }}</p>
+        <marquee behavior="scroll" direction="right" style="color: white">
+            Selamat Datang di Toko Kami !!
+        </marquee>
+    </body>
+</html>
