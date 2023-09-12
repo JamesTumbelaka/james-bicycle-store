@@ -18,12 +18,15 @@
             h3 {
                 color: white;
             }
-            .bottom-marquee {
+            .marquee-container {
                 position: fixed;
                 bottom: 0;
                 left: 0;
                 width: 100%;
-                background-color: blue;
+                background-color: rgb(101, 104, 109);
+                text-align: left;
+                white-space: nowrap;
+                overflow: hidden; 
             }
             body {
                 font-family: 'Times New Roman', Times, serif;
@@ -38,8 +41,11 @@
         <p>{{ name }}</p>
         <h3>Kelas: </h3>
         <p>{{ class }}</p>
-        <marquee behavior="scroll" direction="right" style="color: white">
-            Selamat Datang di Toko Kami !!
-        </marquee>
+        <div class="marquee-container">
+            <marquee behavior="scroll" direction="right" style="color: white ; font-size: 25px;" class="marquee-container" scrollamount="20">
+                Selamat Datang di Toko Kami !
+            </marquee>
+        </div>
+        
     </body>
 </html>
