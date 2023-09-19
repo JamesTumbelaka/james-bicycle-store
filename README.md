@@ -182,6 +182,8 @@ ViewModel memungkinkan binding dua arah antara Model dan View, yang memungkinkan
 3. Digunakan untuk mengambil data dari server, seperti mengambil hasil pencarian atau mengakses halaman web dengan parameter tertentu.
 4. Data GET dapat disimpan dalam cache web browser, sehingga dapat muncul di history browser ataupun URL.
 
+*sumber*: https://docs.djangoproject.com/en/4.2/topics/forms/#:~:text=GET%20and%20POST%20are%20typically,the%20state%20of%20the%20system
+
 ## Perbedaan Utama antara XML, JSON, dan HTML dalam Konteks Pengiriman Data
 
 ### XML (eXtensible Markup Language)
@@ -198,6 +200,8 @@ ViewModel memungkinkan binding dua arah antara Model dan View, yang memungkinkan
 1. Merupakan markup language yang digunakan untuk membuat halaman web dan menampilkan konten web.
 2. Digunakan khusus untuk representasi konten yang ditampilkan di web browser.
 3. Tidak digunakan untuk pertukaran data antar aplikasi, tetapi sebagai alat untuk merender dan menampilkan informasi kepada end user.
+
+*sumber*: https://www.geeksforgeeks.org/difference-between-json-and-xml/
 
 ## Mengapa JSON Sering Digunakan dalam Pertukaran Data antara Aplikasi Web Modern ?
 
@@ -220,6 +224,8 @@ JSON merupakan bentuk data yang compatible dengan JavaScript, sehingga sesuai un
 JSON mendukung struktur data yang simple dan well-structured, memungkinkan untuk mengirim objek dan nested array.
 
 Karena karakteristik - karakteristik diatas, JSON menjadi pilihan utama dalam pertukaran data antara aplikasi web modern, baik dari sisi client maupun server.
+
+*sumber*: https://www.geekboots.com/story/json-with-advantage-and-disadvantage
 
 # Langkah Implementasi Checklist Tugas
 
@@ -408,5 +414,80 @@ path('create-product', create_product, name='create_product'),
 
 9. Mencoba menjalankan proyek Django dengan *command* `python manage.py runserver` dan membuka http://localhost:8000 di browser. Menambahkan beberapa data produk baru dan memeriksa apakah data yang ditambahkan sudah bisa ditampilkan pada halaman utama aplikasi.
 
+## Mengembalikan Data dalam Bentuk XML, JSON, XML by ID, dan JSON by ID
+
+1. Membuka `views.py` yang ada pada folder `main` dan tambahkan *import* `HttpResponse` dan `Serializer` pada bagian paling atas program.
+
+```python
+from django.http import HttpResponse
+from django.core import serializers
+```
+
+2. Membuat sebuah fungsi yang menerima parameter *request* dengan nama `show_xml` dan buatlah sebuah variabel di dalam fungsi tersebut yang menyimpan hasil *query* dari semua data yang ada pada `Product`. Menambahkan *return function* berupa `HttpResponse` yang berisi parameter data hasil *query* yang sudah diserialisasi menjadi XML dan parameter `content_type="application/xml"`.
+
+```python
+def show_xml(request):
+    data = Product.objects.all()
+    return HttpResponse(serializers.serialize("xml", data), content_type="application/xml")
+```
+
+3. Membuka `urls.py` yang ada pada folder `main` dan *import* fungsi yang sudah dibuat.
+
+```python
+from main.views import show_main, create_product, show_xml 
+```
+
+4. Menambahkan *path url* ke dalam `urlpatterns` untuk mengakses fungsi yang sudah di-*import*
+
+```python
+...
+path('xml/', show_xml, name='show_xml'), 
+...
+```
+
+5. Menjalankan proyek Django dengan `python manage.py runserver` dan buka http://localhost:8000/xml
+
+6. Mengulangi proses langkah nomor `2` untuk pengembalian data dalam bentuk JSON, XML by ID, dan JSON by ID. Menambahkan fungsi - fungsi berikut:
+
+```python
+def show_json(request):
+    data = Product.objects.all()
+    return HttpResponse(serializers.serialize("json", data), content_type="application/json")
+
+def show_xml_by_id(request, id):
+    data = Product.objects.filter(pk=id)
+    return HttpResponse(serializers.serialize("xml", data), content_type="application/xml")
+
+def show_json_by_id(request, id):
+    data = Product.objects.filter(pk=id)
+    return HttpResponse(serializers.serialize("json", data), content_type="application/json")
+```
+
+7. Membuka `urls.py` yang ada pada folder `main` dan *import* fungsi-fungsi yang sudah dibuat.
+
+```python
+from main.views import show_main, create_product, show_xml, show_json, show_xml_by_id, show_json_by_id
+```
+
+8. Menambahkan *path url* ke dalam `urlpatterns` untuk mengakses fungsi-fungsi yang sudah di-*import*
+
+```python
+path('json/', show_json, name='show_json'),
+path('xml/<int:id>/', show_xml_by_id, name='show_xml_by_id'),
+path('json/<int:id>/', show_json_by_id, name='show_json_by_id'),
+```
+
+9. Menjalankan proyek Django dengan `python manage.py runserver` dan buka http://localhost:8000/json , http://localhost:8000/xml/[id] , http://localhost:8000/json/[id].
+
+## Menggunakan Postman sebagai *Data Viewer*
+
+1. Menjalankan server dengan perintah `python manage.py runserver`.
+2. Membuka Postman dan membuat *request* baru dengan *method* `GET` dengan menggunakan *url* berikut:
+* http://localhost:8000/
+* http://localhost:8000/xml
+* http://localhost:8000/json
+* http://localhost:8000/xml/[id]
+* http://localhost:8000/json/[id]
+3. Men-*screenshot* hasil yang ditampilkan masing-masing *url*
 
 
