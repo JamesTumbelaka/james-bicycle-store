@@ -166,3 +166,57 @@ ViewModel memungkinkan binding dua arah antara Model dan View, yang memungkinkan
 
 *Source*: https://appmaster.io/id/blog/pola-arsitektur-mvc-mvp-dan-mvvm
 
+# Tugas 3
+
+## Perbedaan Antara Form POST dan Form GET dalam Django
+
+### POST (HTTP POST method)
+1. Data dikirim sebagai body request HTTP.
+2. Invisible dalam URL, maka lebih aman untuk pengiriman data sensitif.
+3. Digunakan untuk mengirim data yang akan dimasukkan atau diubah dalam server, seperti formulir atau penyimpanan data ke dalam database.
+4. Data POST tidak tersimpan dalam cache web browser, maka tidak akan muncul di history browser ataupun URL.
+
+### GET (HTTP GET method)
+1. Data dikirim melalui URL sebagai query string.
+2. Visible dalam URL, maka tidak aman untuk data sensitif karena dapat dilihat oleh orang lain.
+3. Digunakan untuk mengambil data dari server, seperti mengambil hasil pencarian atau mengakses halaman web dengan parameter tertentu.
+4. Data GET dapat disimpan dalam cache web browser, sehingga dapat muncul di history browser ataupun URL.
+
+## Perbedaan Utama antara XML, JSON, dan HTML dalam Konteks Pengiriman Data
+
+### XML (eXtensible Markup Language)
+1. Merupakan format data yang digunakan untuk menggambarkan dan mengatur struktur data.
+2. Lebih kompleks dan berat dibandingkan JSON dan HTML.
+3. Sering digunakan dalam pertukaran data terstruktur antara aplikasi, terutama dalam environment dengan kebutuhan validasi tipe data yang ketat.
+
+### JSON (JavaScript Object Notation)
+1. Merupakan format data ringan yang digunakan untuk pertukaran data antar aplikasi.
+2. Mudah dibaca oleh manusia dan mudah diinterpretasikan oleh mesin.
+3. Biasa digunakan dalam pengembangan web modern untuk mengirim data antara server dan client, serta sebagai format konfigurasi dalam berbagai environment.
+
+### HTML (Hypertext Markup Language)
+1. Merupakan markup language yang digunakan untuk membuat halaman web dan menampilkan konten web.
+2. Digunakan khusus untuk representasi konten yang ditampilkan di peramban web.
+3. Tidak digunakan untuk pertukaran data antar aplikasi, tetapi sebagai alat untuk merender dan menampilkan informasi kepada end user.
+
+## Mengapa JSON Sering Digunakan dalam Pertukaran Data antara Aplikasi Web Modern ?
+
+### Ringkas dan Mudah Dibaca
+JSON memiliki bentuk struktur yang simple dan mudah dibaca dan dimengerti oleh manusia, sehingga ideal untuk proses debugging.
+
+### Mudah Diproses
+JSON dapat diproses dengan mudah oleh bahasa pemrograman yang biasa digunakan, seperti JavaScript (banyak digunakan pada sisi client), Python, Java, dan bahasa pemrograman lainnya.
+
+### Open Format
+JSON merupakan format data terbuka yang disupport secara luas, sehingga berbagai aplikasi dan platform dapat mengkomunikasikan data dengan mudah.
+
+### Ringan
+JSON memiliki overhead yang rendah dalam hal data size yang dikirimkan lewat network, sehingga dapat menghemat bandwidth dari network yang digunakan.
+
+### Compatible dengan JavaScript
+JSON merupakan bentuk data yang compatible dengan JavaScript, sehingga sesuai untuk komunikasi antara client dan server dalam proses web development.
+
+### Terstruktur dengan Baik
+JSON mendukung struktur data yang simple dan well-structured, memungkinkan untuk mengirim objek dan nested array.
+
+Karena karakteristik - karakteristik diatas, JSON menjadi pilihan utama dalam pertukaran data antara aplikasi web modern, baik dari sisi client maupun server.
