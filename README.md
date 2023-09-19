@@ -228,7 +228,7 @@ Membuat skeleton yang akan berfungsi sebagai kerangka views dari situs web, untu
 
 1. Membuat folder `templates` pada root folder dan membuat file HTML baru dengan nama `base.html`. File `base.html` akan berfungsi sebagai template dasar yang dapat digunakan sebagai kerangka umum untuk web page lainnya dalam proyek. File `base.html` di isi dengan kode berikut:
 
-```
+```html
 {% load static }
 <!DOCTYPE html>
 <html lang="en">
@@ -248,4 +248,165 @@ Membuat skeleton yang akan berfungsi sebagai kerangka views dari situs web, untu
     </body>
 </html>
 ```
+
+2. Membuka file `settings.py` yang ada pada subdirektori `bicycle_store` dan mencari baris yang mengandung `TEMPLATES`. Menyesuaikan kode yang ada dengan potongan kode berikut supaya file `base.html` terdeteksi sebagai file template.
+
+```python
+...
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [BASE_DIR / 'templates'], # Tambahkan kode ini
+        'APP_DIRS': True,
+        ...
+    }
+]
+...
+```
+
+3. Pada subdirektori `templates` yang ada pada direktori `main`, mengubah kode pada file `main.html` menjadi sebagai berikut:
+
+```html
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Shopping List Page</h1>
+
+    <h5>Name:</h5>
+    <p>{{name}}</p>
+
+    <h5>Class:</h5>
+    <p>{{class}}</p>
+{% endblock content %}
+```
+Pada kode diatas, `base.html` digunakan sebagai template utama program.
+
+## Membuat Form Input Data dan Menampilkan Data Produk Pada HTML
+
+1. Membuat file baru pada direktori `main` dengan nama `forms.py` untuk membuat struktur form yang dapat menerima data produk baru. Menambahkan kode berikut dalam file `forms.py`.
+
+```python
+from django.forms import ModelForm
+from main.models import Product
+
+class ProductForm(ModelForm):
+    class Meta:
+        model = Product
+        fields = ["name", "price", "amount", "description"]
+```
+Penjelasan Kode:
+* `model = Product` untuk menunjukkan model yang akan digunakan untuk form. Saat data dari form disimpan, isi dari form akan disimpan menjadi sebuah objek `Product`.
+* `fields = ["name", "price", "amount", "description"]` untuk menunjukkan field dari model Product yang digunakan untuk form. Field `date_added` tidak dimasukkan ke list `fields` karena tanggal akan ditambahkan secar otomatis.
+
+2. Buka file `views.py` yang ada pada folder `main` dan tambahkan beberapa import pada bagian atas.
+
+```python
+from django.http import HttpResponseRedirect
+from main.forms import ProductForm
+from django.urls import reverse
+```
+
+3. Membuat fungsi baru dengan nama `create_product` pada file tersebut yang menerima parameter `request` dan menambahkan kode di bawah ini untuk men-generate formulir yang dapat menambahkan data produk secara otomatis ketika data disubmit dari form.
+
+```python
+def create_product(request):
+    form = ProductForm(request.POST or None)
+
+    if form.is_valid() and request.method == "POST":
+        form.save()
+        return HttpResponseRedirect(reverse('main:show_main'))
+
+    context = {'form': form}
+    return render(request, "create_product.html", context)
+```
+
+4. Mengubah fungsi `show_main` yang sudah ada pada file `views.py` menjadi seperti berikut:
+
+```python
+def show_main(request):
+    products = Product.objects.all()
+
+    context = {
+        'name': 'Pak Bepe', # Nama kamu
+        'class': 'PBP A', # Kelas PBP kamu
+        'products': products
+    }
+
+    return render(request, "main.html", context)
+```
+
+5. Membuka `urls.py` yang ada pada folder `main` dan *import* fungsi `create_product` yang sudah dibuat.
+
+```python
+from main.views import show_main, create_product
+```
+
+6. Menambahkan path url ke dalam `urlpatterns` pada `urls.py` di `main` untuk mengakses fungsi yang sudah di-*import*
+
+```python
+path('create-product', create_product, name='create_product'),
+```
+
+7. Buat file HTML baru dengan nama `create_product.html` pada direktori `main/templates`. Isi file dengan kode berikut:
+
+```html
+{% extends 'base.html' %} 
+
+{% block content %}
+<h1>Add New Product</h1>
+
+<form method="POST">
+    {% csrf_token %}
+    <table>
+        {{ form.as_table }}
+        <tr>
+            <td></td>
+            <td>
+                <input type="submit" value="Add Product"/>
+            </td>
+        </tr>
+    </table>
+</form>
+
+{% endblock %}
+```
+
+8. Membuka `main.html` dan menambahkan kode berikut dalam `{% block content %}` untuk menampilkan data produk dalam bentuk table serta tombol "Add New Product" yang akan me-*redirect* ke halaman form.
+
+```html
+...
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Description</th>
+        <th>Date Added</th>
+    </tr>
+
+    {% comment %} Berikut cara memperlihatkan data produk di bawah baris ini {% endcomment %}
+
+    {% for product in products %}
+        <tr>
+            <td>{{product.name}}</td>
+            <td>{{product.price}}</td>
+            <td>{{product.description}}</td>
+            <td>{{product.date_added}}</td>
+        </tr>
+    {% endfor %}
+</table>
+
+<br />
+
+<a href="{% url 'main:create_product' %}">
+    <button>
+        Add New Product
+    </button>
+</a>
+
+{% endblock content %}
+```
+
+9. Mencoba menjalankan proyek Django dengan *command* `python manage.py runserver` dan membuka http://localhost:8000 di browser. Menambahkan beberapa data produk baru dan memeriksa apakah data yang ditambahkan sudah bisa ditampilkan pada halaman utama aplikasi.
+
+
 
