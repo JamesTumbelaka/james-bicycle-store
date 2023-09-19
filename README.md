@@ -491,16 +491,16 @@ path('json/<int:id>/', show_json_by_id, name='show_json_by_id'),
 3. Men-*screenshot* hasil yang ditampilkan masing-masing *url*
 
 ## Screenshot Postman dengan Bentuk Data HTML
-https://github.com/JamesTumbelaka/james-bicycle-store/blob/main/html%20ss.png
+![Screenshot HTML](https://github.com/JamesTumbelaka/james-bicycle-store/blob/main/html%20ss.png)
 
 ## Screenshot Postman dengan Bentuk Data XML
-https://github.com/JamesTumbelaka/james-bicycle-store/blob/main/xml%20ss.png
+![Screenshot XML](https://github.com/JamesTumbelaka/james-bicycle-store/blob/main/xml%20ss.png)
 
 ## Screenshot Postman dengan Bentuk Data JSON
-https://github.com/JamesTumbelaka/james-bicycle-store/blob/main/json%20ss.png
+![Screenshot JSON](https://github.com/JamesTumbelaka/james-bicycle-store/blob/main/json%20ss.png)
 
 ## SCreenshot Postman dengan Bentuk Data XML Berdasarkan ID
-https://github.com/JamesTumbelaka/james-bicycle-store/blob/main/xml%20by%20id%20ss.png
+![Screenshot XMLbyID](https://github.com/JamesTumbelaka/james-bicycle-store/blob/main/xml%20by%20id%20ss.png)
 
 ## SCreenshot Postman dengan Bentuk Data JSON Berdasarkan ID
-https://github.com/JamesTumbelaka/james-bicycle-store/blob/main/json%20by%20id%20ss.png
+![Screenshot JSONbyID](https://github.com/JamesTumbelaka/james-bicycle-store/blob/main/json%20by%20id%20ss.png)
