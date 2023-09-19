@@ -196,7 +196,7 @@ ViewModel memungkinkan binding dua arah antara Model dan View, yang memungkinkan
 
 ### HTML (Hypertext Markup Language)
 1. Merupakan markup language yang digunakan untuk membuat halaman web dan menampilkan konten web.
-2. Digunakan khusus untuk representasi konten yang ditampilkan di peramban web.
+2. Digunakan khusus untuk representasi konten yang ditampilkan di web browser.
 3. Tidak digunakan untuk pertukaran data antar aplikasi, tetapi sebagai alat untuk merender dan menampilkan informasi kepada end user.
 
 ## Mengapa JSON Sering Digunakan dalam Pertukaran Data antara Aplikasi Web Modern ?
@@ -220,3 +220,30 @@ JSON merupakan bentuk data yang compatible dengan JavaScript, sehingga sesuai un
 JSON mendukung struktur data yang simple dan well-structured, memungkinkan untuk mengirim objek dan nested array.
 
 Karena karakteristik - karakteristik diatas, JSON menjadi pilihan utama dalam pertukaran data antara aplikasi web modern, baik dari sisi client maupun server.
+
+# Langkah Implementasi Checklist Tugas
+
+## Implementasi Skeleton sebagai Kerangka Views
+Membuat skeleton yang akan berfungsi sebagai kerangka views dari situs web, untuk memastikan adanya konsistensi dalam desain situs web dan memperkecil terjadinya redundansi kode.
+
+1. Membuat folder `templates` pada root folder dan membuat file HTML baru dengan nama `base.html`. File `base.html` akan berfungsi sebagai template dasar yang dapat digunakan sebagai kerangka umum untuk web page lainnya dalam proyek. File `base.html` di isi dengan kode berikut:
+
+`` {% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0"
+        />
+        {% block meta %}
+        {% endblock meta %}
+    </head>
+
+    <body>
+        {% block content %}
+        {% endblock content %}
+    </body>
+</html>
+``
