@@ -3,39 +3,52 @@
 {% block content %}
     <h1>James Bicycle Store</h1>
 
-    <h5>Name: {{name}}</h5>
-    <h5>Class: {{class}}</h5>
+    <h3><span class="label">Name: {{ name }}</span></h3>
+    <h3><span class="label">Class: {{ class }}</span></h3>
     
-    <table>
-        <tr>
-            <th>Name</th>
-            <th>Price</th>
-            <th>Amount</th>
-            <th>Description</th>
-            <th>Date Added</th>
-        </tr>
+    <table class="box">
+        <thead>
+            <tr>
+                <th class="box-0lax">Name</th>
+                <th class="box-0lax">Price</th>
+                <th class="box-0lax">Amount</th>
+                <th class="box-0lax">Description</th>
+                <th class="box-0lax">Date Added</th>
+                <th class="box-0lax">Delete Product</th>
+            </tr>
+        </thead>
     
         {% comment %} Berikut cara memperlihatkan data produk di bawah baris ini {% endcomment %}
-    
-        {% for product in products %}
-            <tr>
-                <td>{{ product.name }}</td>
-                <td>{{ product.price }}</td>
-                <td>{{ product.amount }}</td>
-                <td>{{ product.description }}</td>
-                <td>{{ product.date_added }}</td>
-                <td>
-                    <a href="{% url 'main:delete_product' product.id %}">Delete</a>
-                </td>
-            </tr>
-        {% endfor %}
+        <tbody>
+            {% for product in products %}
+                <tr>
+                    <td class="box-0lax">{{ product.name }}</td>
+                    <td class="box-0lax">{{ product.price }}</td>
+                    <td class="box-0lax">{{ product.amount }}</td>
+                    <td class="box-0lax">{{ product.description }}</td>
+                    <td class="box-0lax">{{ product.date_added }}</td>
+                    <td class="box-0lax">
+                        <a href="{% url 'main:delete_product' product.id %}">Delete</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
     </table>
+
     <br />
-    
-    <a href="{% url 'main:create_product' %}">
-        <button>
-            Add New Product
-        </button>
-    </a>
-    
+
+    <div style="text-align: center;">
+        <a href="{% url 'main:create_product' %}">
+            <button>
+                Add New Product
+            </button>
+        </a>
+    </div>
+
+    <div class="marquee-container">
+        <marquee behavior="scroll" direction="right" style="color: white ; font-size: 20px;" class="marquee-container" scrollamount="15">
+            Selamat Datang di Toko Kami !
+        </marquee>
+    </div>
+
 {% endblock content %}

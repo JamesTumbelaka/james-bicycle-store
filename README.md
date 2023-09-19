@@ -165,3 +165,4 @@ MVVM biasanya digunakan dalam pengembangan aplikasi berbasis data.
 ViewModel memungkinkan binding dua arah antara Model dan View, yang memungkinkan perubahan data secara otomatis dalam tampilan.
 
 *Source*: https://appmaster.io/id/blog/pola-arsitektur-mvc-mvp-dan-mvvm
+
