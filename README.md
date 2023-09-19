@@ -182,7 +182,7 @@ ViewModel memungkinkan binding dua arah antara Model dan View, yang memungkinkan
 3. Digunakan untuk mengambil data dari server, seperti mengambil hasil pencarian atau mengakses halaman web dengan parameter tertentu.
 4. Data GET dapat disimpan dalam cache web browser, sehingga dapat muncul di history browser ataupun URL.
 
-*sumber*: https://docs.djangoproject.com/en/4.2/topics/forms/#:~:text=GET%20and%20POST%20are%20typically,the%20state%20of%20the%20system
+*Source*: https://docs.djangoproject.com/en/4.2/topics/forms/#:~:text=GET%20and%20POST%20are%20typically,the%20state%20of%20the%20system
 
 ## Perbedaan Utama antara XML, JSON, dan HTML dalam Konteks Pengiriman Data
 
@@ -201,7 +201,7 @@ ViewModel memungkinkan binding dua arah antara Model dan View, yang memungkinkan
 2. Digunakan khusus untuk representasi konten yang ditampilkan di web browser.
 3. Tidak digunakan untuk pertukaran data antar aplikasi, tetapi sebagai alat untuk merender dan menampilkan informasi kepada end user.
 
-*sumber*: https://www.geeksforgeeks.org/difference-between-json-and-xml/
+*Source*: https://www.geeksforgeeks.org/difference-between-json-and-xml/
 
 ## Mengapa JSON Sering Digunakan dalam Pertukaran Data antara Aplikasi Web Modern ?
 
@@ -225,7 +225,7 @@ JSON mendukung struktur data yang simple dan well-structured, memungkinkan untuk
 
 Karena karakteristik - karakteristik diatas, JSON menjadi pilihan utama dalam pertukaran data antara aplikasi web modern, baik dari sisi client maupun server.
 
-*sumber*: https://www.geekboots.com/story/json-with-advantage-and-disadvantage
+*Source*: https://www.geekboots.com/story/json-with-advantage-and-disadvantage
 
 # Langkah Implementasi Checklist Tugas
 
