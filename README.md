@@ -228,7 +228,8 @@ Membuat skeleton yang akan berfungsi sebagai kerangka views dari situs web, untu
 
 1. Membuat folder `templates` pada root folder dan membuat file HTML baru dengan nama `base.html`. File `base.html` akan berfungsi sebagai template dasar yang dapat digunakan sebagai kerangka umum untuk web page lainnya dalam proyek. File `base.html` di isi dengan kode berikut:
 
-`` {% load static %}
+```
+{% load static }
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -246,4 +247,5 @@ Membuat skeleton yang akan berfungsi sebagai kerangka views dari situs web, untu
         {% endblock content %}
     </body>
 </html>
-``
+```
+
