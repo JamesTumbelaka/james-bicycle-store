@@ -499,8 +499,8 @@ path('json/<int:id>/', show_json_by_id, name='show_json_by_id'),
 ## Screenshot Postman dengan Bentuk Data JSON
 ![Screenshot JSON](https://github.com/JamesTumbelaka/james-bicycle-store/blob/main/json%20ss.png)
 
-## SCreenshot Postman dengan Bentuk Data XML Berdasarkan ID
+## Screenshot Postman dengan Bentuk Data XML Berdasarkan ID
 ![Screenshot XMLbyID](https://github.com/JamesTumbelaka/james-bicycle-store/blob/main/xml%20by%20id%20ss.png)
 
-## SCreenshot Postman dengan Bentuk Data JSON Berdasarkan ID
+## Screenshot Postman dengan Bentuk Data JSON Berdasarkan ID
 ![Screenshot JSONbyID](https://github.com/JamesTumbelaka/james-bicycle-store/blob/main/json%20by%20id%20ss.png)
