@@ -504,3 +504,37 @@ path('json/<int:id>/', show_json_by_id, name='show_json_by_id'),
 
 ## Screenshot Postman dengan Bentuk Data JSON Berdasarkan ID
 ![Screenshot JSONbyID](https://github.com/JamesTumbelaka/james-bicycle-store/blob/main/json%20by%20id%20ss.png)
+
+## Penjelasan Untuk Soal Bonus Point
+Untuk menambahkan pesan "anda menyimpan X sepeda pada aplikasi ini", terdapat beberapa kode yang perlu ditambahkan dalam proyek.
+
+1. Membuka `views.py` dan menambahkan kode berikut di dalam fungsi `show_main` dalam posisi seperti dibawah ini.
+
+```python
+def show_main(request):
+    products = Product.objects.all()
+    total_items = Product.objects.count()
+    context = {
+        'name': 'James Zefanya Tumbelaka',
+        'class': 'PBP E',
+        'products': products,
+        'total_items': total_items,
+    }
+
+    return render(request, "main.html", context)
+```
+Potongan kode `total_items = Product.objects.count()` ditambahkan untuk men-*track* jumlah produk, dalam hal ini sepeda, yang sedang disimpan dalam aplikasi web ini.
+
+2. Menambahkan kode di `main.html` untuk menampilkan pesan "anda menyimpan X sepeda pada aplikasi ini" sebelum bagian kode pembuatan table seperti berikut:
+
+```html
+...
+<div class="current_total_item">
+    <h4>anda menyimpan {{ total_items }} sepeda pada aplikasi ini</h4>
+</div>
+<table class="box">
+        <thead>
+...
+```
+
+3. Menjalankan perintah `python manage.py runserver` untuk menjalankan server. Mencoba menambahkan sepeda dalam aplikasi, pesan "anda menyimpan X sepeda pada aplikasi ini" sudah dapat ditampilkan diatas table produk.

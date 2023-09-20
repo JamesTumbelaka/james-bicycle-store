@@ -1,10 +1,20 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>James Bicycle Store</h1>
+    <div class="store_title">
+        <h1>James Bicycle Store</h1>
+    </div>
 
-    <h3><span class="label">Name: {{ name }}</span></h3>
-    <h3><span class="label">Class: {{ class }}</span></h3>
+    <div class="label">
+        <h3>Nama: {{ name }}</h3>
+        <h3>Kelas: {{ class }}</h3>
+    </div>
+
+    <br />
+
+    <div class="current_total_item">
+        <h4>anda menyimpan {{ total_items }} sepeda pada aplikasi ini</h4>
+    </div>
     
     <table class="box">
         <thead>
