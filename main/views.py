@@ -14,10 +14,10 @@ import datetime
 
 @login_required(login_url='/login')
 def show_main(request):
-    products = Product.objects.all()
-    total_items = Product.objects.count()
+    products = Product.objects.filter(user=request.user)
+    total_items = products.count()
     context = {
-        'name': 'James Zefanya Tumbelaka',
+        'name': request.user.username,
         'class': 'PBP E',
         'products': products,
         'total_items': total_items,
@@ -30,6 +30,9 @@ def create_product(request):
     form = ProductForm(request.POST or None)
 
     if form.is_valid() and request.method == "POST":
+        product = form.save(commit=False)
+        product.user = request.user
+        product.save()
         form.save()
         return HttpResponseRedirect(reverse('main:show_main'))
 
