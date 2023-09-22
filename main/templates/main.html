@@ -54,6 +54,14 @@
             </button>
         </a>
     </div>
+    <h5>Sesi terakhir login: {{ last_login }}</h5>
+    <div style="text-align: center;">
+        <a href="{% url 'main:logout' %}">
+            <button>
+                Logout
+            </button>
+        </a>
+    </div>
 
     <div class="marquee-container">
         <marquee behavior="scroll" direction="right" style="color: white ; font-size: 20px;" class="marquee-container" scrollamount="15">
