@@ -21,9 +21,8 @@
             <tr>
                 <th class="box-0lax">Name</th>
                 <th class="box-0lax">Price</th>
-                <th class="box-0lax">Subtract Amount</th>
                 <th class="box-0lax">Amount</th>
-                <th class="box-0lax">Add Amount</th>
+                <th class="box-0lax">Add/Sub</th>
                 <th class="box-0lax">Description</th>
                 <th class="box-0lax">Date Added</th>
                 <th class="box-0lax">Delete Product</th>
@@ -36,18 +35,17 @@
                 <tr>
                     <td class="box-0lax">{{ product.name }}</td>
                     <td class="box-0lax">{{ product.price }}</td>
+                    <td class="box-0lax">{{ product.amount }}</td>
                     <td class="box-0lax">
                         <form method="POST" action="{% url 'main:decrement_amount' product.id %}">
                             {% csrf_token %}
-                            <button type="submit">-</button>
+                            <button type="submit">sub</button>
                         </form>
-                    </td>
-                    <td class="box-0lax">{{ product.amount }}</td>
-                    <td class="box-0lax">
                         <form method="POST" action="{% url 'main:increment_amount' product.id %}">
                             {% csrf_token %}
-                            <button type="submit">+</button>
+                            <button type="submit">add</button>
                         </form>
+                        
                     </td>
                     <td class="box-0lax">{{ product.description }}</td>
                     <td class="box-0lax">{{ product.date_added }}</td>
