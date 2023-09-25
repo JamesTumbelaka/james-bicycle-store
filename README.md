@@ -513,7 +513,7 @@ Untuk menambahkan pesan "anda menyimpan X sepeda pada aplikasi ini", terdapat be
 ```python
 def show_main(request):
     products = Product.objects.all()
-    total_items = Product.objects.count()
+    total_items = products.count()
     context = {
         'name': 'James Zefanya Tumbelaka',
         'class': 'PBP E',
