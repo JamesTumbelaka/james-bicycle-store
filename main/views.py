@@ -96,3 +96,16 @@ def logout_user(request):
     response = HttpResponseRedirect(reverse('main:login'))
     response.delete_cookie('last_login')
     return response
+
+def increment_amount(request, id):
+    product = get_object_or_404(Product, pk=id)
+    product.amount += 1
+    product.save()
+    return redirect('main:show_main')
+
+def decrement_amount(request, id):
+    product = get_object_or_404(Product, pk=id)
+    if product.amount > 0:
+        product.amount -= 1
+        product.save()
+    return redirect ('main:show_main')
