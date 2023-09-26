@@ -45,7 +45,6 @@
                             {% csrf_token %}
                             <button type="submit">add</button>
                         </form>
-                        
                     </td>
                     <td class="box-0lax">{{ product.description }}</td>
                     <td class="box-0lax">{{ product.date_added }}</td>
@@ -66,6 +65,7 @@
             </button>
         </a>
     </div>
+
     <div style="text-align: center;">
         <h5>Sesi terakhir login: {{ last_login }}</h5>
     </div>

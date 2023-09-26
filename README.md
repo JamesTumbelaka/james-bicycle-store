@@ -836,8 +836,8 @@ if user is not None:
 
 ```python
 context = {
-    'name': 'Pak Bepe',
-    'class': 'PBP A',
+    'name': 'James Zefanya Tumbelaka',
+    'class': 'PBP E',
     'products': products,
     'last_login': request.COOKIES['last_login'],
 }
@@ -918,3 +918,143 @@ def show_main(request):
 
 ## Penjelasan Untuk Soal Bonus Point
 
+### Fitur Menghapus Product
+
+1. Membuka `views.py` dan mengimport fungsi `get_object_or_404`.
+
+```python
+from django.shortcuts import get_object_or_404
+```
+
+2. Membuat fungsi baru bernama `delete_product` yang menerima parameter `request` dan `id`.
+
+3. Menambahkan kode berikut sebagai isi dari fungsi yang sudah dibuat.
+
+```python
+def delete_product(request, id):
+    product = get_object_or_404(Product, pk=id)
+
+    if request.method == 'POST':
+        product.delete()
+        return redirect('main:show_main')
+
+    return render(request, 'delete_product.html', {'product': product})
+```
+
+4. Membuka `urls.py` dan mengimport fungsi yang sudah dibuat.
+
+```python
+from main.views import delete_product
+```
+
+5. Menambahkan *path url* untuk pemanggilan fungsi `delete_product`.
+
+```python
+...
+path('delete_product/<int:id>/', delete_product, name='delete_product'),
+...
+```
+
+6. Membuka `main.html` dan menambahkan kode berikut dibawah elemen tabel `product.date_added`.
+
+```HTML
+...
+<td class="box-0lax">{{ product.date_added }}</td>
+<td class="box-0lax">
+    <a href="{% url 'main:delete_product' product.id %}">Delete</a>
+</td>
+...
+```
+
+7. Membuat berkas baru `delete_product.html` dalam subdirektori `main/templates` sebagai halaman konfirmasi penghapusan produk dalam inventori.
+
+8. Menambahkan kode berikut sebagai isi dari `delete_product.html`.
+
+```HTML
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Confirm Deletion</title>
+    <style type="text/css">
+        body {
+                font-family: 'Times New Roman', Times, serif;
+                background-color:rgb(202, 200, 197);
+            }
+    </style>
+</head>
+<body>
+    <h2>Confirm Deletion</h2>
+    <p>Are you sure you want to delete this product?</p>
+    <table>
+        <tr>
+            <td>
+                <a href="{% url 'main:show_main' %}">Cancel</a>
+            </td>
+            <td>
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="submit" value="Delete">
+                </form>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
+```
+
+9. Menjalankan server dengan `python manage.py runserver` dan fitur `delete` untuk penghapusan produk dalam inventori sudah berfungsi.
+
+### Fitur Menambah dan Mengurangi Nilai Amount
+
+1. Membuka `views.py` dan membuat dua fungsi baru `increment_amount` dan `decrement_amount` yang menerima parameter `request` dan `id` untuk menambah dan mengurangi nilai `amount`.
+
+2. Mengisi masing - masing fungsi dengan kode seperti berikut.
+
+```python
+def increment_amount(request, id):
+    product = get_object_or_404(Product, pk=id)
+    product.amount += 1
+    product.save()
+    return redirect('main:show_main')
+
+def decrement_amount(request, id):
+    product = get_object_or_404(Product, pk=id)
+    if product.amount > 0:
+        product.amount -= 1
+        product.save()
+    return redirect ('main:show_main')
+```
+
+3. Membuka `urls.py` dan mengimport dua fungsi yang baru dibuat.
+
+```python
+from main.views import increment_amount, decrement_amount
+```
+
+4. Menambahkan *path url* untuk kedua fungsi yang sudah import.
+
+```python
+...
+path('increment_amount/<int:id>/', increment_amount, name='increment_amount'),
+path('decrement_amount/<int:id>/', decrement_amount, name='decrement_amount'),
+...
+```
+
+5. Membuka `main.html` dan menambahkan tombol untuk `add` dan `sub` nilai `amount` di bawah komponen `product.amount`.
+```HTML
+...
+<td class="box-0lax">{{ product.amount }}</td>
+<td class="box-0lax">
+    <form method="POST" action="{% url 'main:decrement_amount' product.id %}">
+        {% csrf_token %}
+        <button type="submit">sub</button>
+    </form>
+    <form method="POST" action="{% url 'main:increment_amount' product.id %}">
+        {% csrf_token %}
+        <button type="submit">add</button>
+    </form>
+</td>
+...
+```
+
+6. Menjalankan server dengan perintah `python manage.py runserver` dan tombol `add` dan `sub` seharusnya sudah ditampilkan di kolom sebelah `Amount`.
