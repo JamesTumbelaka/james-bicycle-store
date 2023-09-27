@@ -7,6 +7,16 @@
                 font-family: 'Times New Roman', Times, serif;
                 background-color:rgb(202, 200, 197);
             }
+        .marquee-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: black;
+            text-align: left;
+            white-space: nowrap;
+            overflow: hidden; 
+        }
     </style>
 </head>
 <body>
@@ -25,5 +35,10 @@
             </td>
         </tr>
     </table>
+    <div class="marquee-container">
+        <marquee behavior="scroll" direction="right" style="color: white ; font-size: 20px;" class="marquee-container" scrollamount="15">
+            Selamat Datang di Toko Kami !
+        </marquee>
+    </div>
 </body>
 </html>

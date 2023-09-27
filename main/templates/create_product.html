@@ -9,7 +9,12 @@
     <form method="POST">
         {% csrf_token %}
         <table>
-            {{ form.as_table }}
+            {% for field in form.visible_fields %}
+            <tr class="productform">
+                <td style="text-align: right;">{{ field.label_tag }}</td>
+                <td>{{ field }}</td>
+            </tr>
+            {% endfor %}
             <tr>
                 <td></td>
                 <td>
@@ -20,6 +25,11 @@
             </tr>
         </table>
     </form>
+</div>
+<div class="marquee-container">
+    <marquee behavior="scroll" direction="right" style="color: white ; font-size: 20px;" class="marquee-container" scrollamount="15">
+        Selamat Datang di Toko Kami !
+    </marquee>
 </div>
 
 {% endblock %}
