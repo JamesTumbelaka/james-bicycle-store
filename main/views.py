@@ -108,4 +108,6 @@ def decrement_amount(request, id):
     if product.amount > 0:
         product.amount -= 1
         product.save()
+    if product.amount <= 0:
+        product.delete()
     return redirect ('main:show_main')
