@@ -1,44 +1,33 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Confirm Deletion</title>
-    <style type="text/css">
-        body {
-                font-family: 'Times New Roman', Times, serif;
-                background-color:rgb(202, 200, 197);
-            }
-        .marquee-container {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background-color: black;
-            text-align: left;
-            white-space: nowrap;
-            overflow: hidden; 
-        }
-    </style>
-</head>
+{% extends 'base.html' %}
+
+{% block content %}
 <body>
-    <h2>Confirm Deletion</h2>
-    <p>Are you sure you want to delete this product?</p>
-    <table>
-        <tr>
-            <td>
-                <a href="{% url 'main:show_main' %}">Cancel</a>
-            </td>
-            <td>
-                <form method="post">
-                    {% csrf_token %}
-                    <input type="submit" value="Delete">
-                </form>
-            </td>
-        </tr>
-    </table>
+    <div class="delete-title">
+        <p>Confirm Deletion</p>
+    </div>
+    <div class="delete-message">
+        <p>Are you sure you want to delete this product?</p>
+    </div>
+    <div class="delete-button">
+        <table>
+            <tr>
+                <td>
+                    <a href="{% url 'main:show_main' %}">Cancel</a>
+                </td>
+                <td>
+                    <form method="post">
+                        {% csrf_token %}
+                        <input type="submit" value="Delete">
+                    </form>
+                </td>
+            </tr>
+        </table>
+    </div>
     <div class="marquee-container">
         <marquee behavior="scroll" direction="right" style="color: white ; font-size: 20px;" class="marquee-container" scrollamount="15">
             Selamat Datang di Toko Kami !
         </marquee>
     </div>
 </body>
-</html>
+
+{% endblock %}

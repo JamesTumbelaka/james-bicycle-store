@@ -72,12 +72,8 @@ def edit_product(request, id):
 
 def delete_product(request, id):
     product = get_object_or_404(Product, pk=id)
-
-    if request.method == 'POST':
-        product.delete()
-        return redirect('main:show_main')
-
-    return render(request, 'delete_product.html', {'product': product})
+    product.delete()
+    return HttpResponseRedirect(reverse('main:show_main'))
 
 def register(request):
     form = UserCreationForm()

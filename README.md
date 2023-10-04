@@ -1109,4 +1109,201 @@ Padding adalah jarak antara konten elemen dan batas elemen itu sendiri. Padding 
 
 * Sebaiknya gunakan Tailwind CSS jika kita ingin desain yang sangat kustom dan kita memiliki waktu untuk mengatur setiap detailnya. Ini cocok jika kita ingin menciptakan tampilan yang unik dan sesuai dengan kebutuhan proyek kita.
 
-## Implementasi Langkah Pengerjaan Tugas
+# Implementasi Langkah Pengerjaan Tugas
+## Menambahkan Bootstrap CSS, Javascript dan styling CSS
+1. Membuka `base.html` dalam folder `templates` dan menambahkan Bootstrap CSS dan JavaScript di bagian `<head>`.
+```HTML
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha384-KyZXEAg3QhqLMpG8r+J4jsl5c9zdLKaUk5Ae5f5b1bw6AUn5f5v8FZJoMxm6f5cH1" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+```
+
+2. Menambahkan kode berikut sebagai kustomisasi elemen - elemen HTML di bawah `</title>` pada berkas `base.html`.
+```HTML
+ <style type="text/css">
+    .productform {
+        font-family:"Rubik";
+    }
+    .card {
+        font-weight: bold;
+        margin-left: 30px;
+    }
+    .current_total_item {
+        text-align: center;
+        color: red;
+        font-family: Menlo, monospace;
+        text-decoration: underline;
+        font-size: 15px;
+    }
+    .box {
+        border: 2px solid black;
+        border-collapse: collapse; 
+        border-spacing: 0;
+        margin-left: auto; 
+        margin-right: auto;
+    }
+    .box td {
+        border-color: black; 
+        border-style: solid; 
+        border-width: 2px; 
+        font-family: 'Times New Roman', Times, serif; 
+        font-size: 14px;
+        overflow: hidden; 
+        padding: 10px 5px; 
+        word-break: normal;
+        text-align: center;
+        background-color: rgb(226, 221, 219);
+    }
+    .box th {
+        border-color: black; 
+        border-style: solid; 
+        border-width: 2px; 
+        font-family: 'Times New Roman', Times, serif; 
+        font-size: 16px;
+        font-weight: bold; 
+        color: white;
+        overflow: hidden; 
+        padding: 10px 5px; 
+        word-break: normal;
+        text-align: center;
+        background-color: rgb(38, 36, 36);
+    }
+    .createproduct {
+        background-color: rgb(202, 200, 197);
+    }
+    .add_product {
+        text-align: left;
+    }
+    .marquee-container {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background-color: black;
+        text-align: left;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+    .add_product {
+        color: black;
+        text-align: center;
+
+    }
+    body {
+        font-family: 'Times New Roman', Times, serif;
+        background-color: whitesmoke;
+    }
+</style>
+```
+
+## Menambahkan *navbar* dalam Aplikasi Web
+1. Membuka berkas `main.html` kemudian menambahkan kode berikut untuk membentuk *navbar* yang akan berisi Nama Toko, tombol `Add Product` dan `Logout`.
+```HTML
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+        <a class="navbar-brand">James Bicycle Store</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{% url 'main:create_product' %}">Add Product</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{% url 'main:logout' %}">Logout</a>
+                </li>
+            </ul>
+        </div>
+        </div>
+    </nav>
+```
+
+2. Membuka berkas `base.html` dan menambahkan sedikit perubahan *styling* untuk *navbar* yang sudah dibuat.
+```HTML
+<style type="text/css">
+            .productform {
+                font-family:"Rubik";
+            }
+            .container-fluid {
+                margin-left: 25px;
+            }
+            .navbar-brand {
+                font-weight: bold;
+            }
+            ...
+```
+
+## Menambahkan Fitur Edit Product
+1. Membuka `views.py` dan menambahkan fungsi berikut yang akan berfungsi untuk mengubah isi produk.
+```python
+def edit_product(request, id):
+    # Get product berdasarkan ID
+    product = Product.objects.get(pk = id)
+
+    # Set product sebagai instance dari form
+    form = ProductForm(request.POST or None, instance=product)
+
+    if form.is_valid() and request.method == "POST":
+        # Simpan form dan kembali ke halaman awal
+        form.save()
+        return HttpResponseRedirect(reverse('main:show_main'))
+
+    context = {'form': form}
+    return render(request, "edit_product.html", context)
+```
+
+2. Membuka `urls.py` pada direktori `main` dan mengimpor fungsi yang sudah dibuat.
+```python
+from main.views import edit_product
+```
+
+3. Menambahkan *path url* untuk pemanggilan fungsi `edit_product`.
+```python
+path('edit-product/<int:id>', edit_product, name='edit_product'),
+```
+
+4. Membuat berkas baru bernama `edit_product.html` yang akan berfungsi sebagai halaman edit produk dan menambahkan kode berikut pada berkas tersebut.
+```HTML
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<h1>Edit Product</h1>
+
+<form method="POST">
+    {% csrf_token %}
+    <table>
+        {{ form.as_table }}
+        <tr>
+            <td></td>
+            <td>
+                <a href="{% url 'main:show_main' %}">Cancel</a>
+                <input type="submit" value="Edit Product"/>
+            </td>
+            <td>
+            </td>
+        </tr>
+    </table>
+</form>
+
+{% endblock %}
+```
+
+5. Membuka `main.html` dan menambahkan kode berikut pada ujung setiap baris pada tabel produk.
+```HTML
+...
+    <td>
+        <a href="{% url 'main:edit_product' product.pk %}">
+            <button>
+                Edit
+            </button>
+        </a>
+    </td>
+    ...
+```
+
+6. Menjalankan proyek Django dengan perintah `python manage.py runserver` dan fitur edit produk sudah dapat terlihat di ujung setiap baris produk dan berfungsi dengan seharusnya.
