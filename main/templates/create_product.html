@@ -2,29 +2,31 @@
 
 {% block content %}
 <div class="createproduct">
-    <div class="add_product" style="text-align: left">
-        <h1>Add New Product</h1>
+    <div class="create-title">
+        <p>Add New Product</p>
     </div>
 
-    <form method="POST">
-        {% csrf_token %}
-        <table>
-            {% for field in form.visible_fields %}
-            <tr class="productform">
-                <td style="text-align: right;">{{ field.label_tag }}</td>
-                <td>{{ field }}</td>
-            </tr>
-            {% endfor %}
-            <tr>
-                <td></td>
-                <td>
-                    <a href="{% url 'main:show_main' %}">Cancel</a>
-                    <input type="submit" value="Add Product"/>
+    <div class="create-table">
+        <form method="POST">
+            {% csrf_token %}
+            <table>
+                {% for field in form.visible_fields %}
+                <tr class="productform">
+                    <td style="text-align: right;">{{ field.label_tag }}</td>
+                    <td>{{ field }}</td>
+                </tr>
+                {% endfor %}
+                <tr>
+                    <td></td>
+                    <td>
+                        <a href="{% url 'main:show_main' %}">Cancel</a>
+                        <input type="submit" value="Add Product"/>
 
-                </td>
-            </tr>
-        </table>
-    </form>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
 </div>
 <div class="marquee-container">
     <marquee behavior="scroll" direction="right" style="color: white ; font-size: 20px;" class="marquee-container" scrollamount="15">
