@@ -34,52 +34,57 @@
     <div class="current_total_item">
         <p>anda menyimpan {{ total_items }} sepeda pada aplikasi ini</p>
     </div>
-    
-    <table class="box">
-        <thead>
-            <tr>
-                <th class="box-0lax">Name</th>
-                <th class="box-0lax">Price</th>
-                <th class="box-0lax">Amount</th>
-                <th class="box-0lax">Add/Sub</th>
-                <th class="box-0lax">Description</th>
-                <th class="box-0lax">Date Added</th>
-                <th class="box-0lax">Options</th>
-            </tr>
-        </thead>
 
-        {% comment %} Berikut cara memperlihatkan data produk di bawah baris ini {% endcomment %}
-        <tbody>
-            {% for product in products %}
-                <tr>
-                    <td class="box-0lax">{{ product.name }}</td>
-                    <td class="box-0lax">{{ product.price }}</td>
-                    <td class="box-0lax">{{ product.amount }}</td>
-                    <td class="box-0lax">
-                        <form method="POST" action="{% url 'main:decrement_amount' product.id %}">
-                            {% csrf_token %}
-                            <button type="submit">sub</button>
-                        </form>
-                        <form method="POST" action="{% url 'main:increment_amount' product.id %}">
-                            {% csrf_token %}
-                            <button type="submit">add</button>
-                        </form>
-                    </td>
-                    <td class="box-0lax">{{ product.description }}</td>
-                    <td class="box-0lax">{{ product.date_added }}</td>
-                    <td class="box-0lax">
-                        <a href="{% url 'main:edit_product' product.id %}">Edit</a>
-                        <a href="{% url 'main:delete_product' product.id %}">Delete</a>
-                    </td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <div style="margin-left: 30px; margin-right: 30px;">
+        <table id="product_table" class="table table-dark table-striped">
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Add New Product</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="form" onsubmit="return false;">
+                                {% csrf_token %}
+                                <div class="mb-3">
+                                    <label for="name" class="col-form-label">Name:</label>
+                                    <input type="text" class="form-control" id="name" name="name"></input>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="price" class="col-form-label">Price:</label>
+                                    <input type="number" class="form-control" id="price" name="price"></input>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="amount" class="col-form-label">Amount:</label>
+                                    <input type="number" class="form-control" id="amount" name="amount"></input>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="description" class="col-form-label">Description:</label>
+                                    <textarea class="form-control" id="description" name="description"></textarea>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" id="button_add" data-bs-dismiss="modal">Add Product</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </table>
+    </div>
 
     <br />
 
-    <div style="text-align: center;">
-        <h5>Sesi terakhir login: {{ last_login }}</h5>
+    <div class="add_product_ajax_button">
+        <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Add Product by AJAX</button>
+    </div>
+
+    <br />
+
+    <div class="last_login">
+        <p>Sesi terakhir login: {{ last_login }}</p>
     </div>
 
     <br />
@@ -89,5 +94,45 @@
             Selamat Datang di Toko Kami !
         </marquee>
     </div>
+
+    <script>
+        async function getProducts() {
+            return fetch("{% url 'main:get_product_json' %}").then((res) => res.json())
+        }
+        async function refreshProducts() {
+            document.getElementById("product_table").innerHTML = ""
+            const products = await getProducts()
+            let htmlString = `<tr>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Amount</th>
+                <th>Description</th>
+                <th>Date Added</th>
+            </tr>`
+            products.forEach((item) => {
+                htmlString += `\n<tr>
+                <td>${item.fields.name}</td>
+                <td>${item.fields.price}</td>
+                <td>${item.fields.amount}</td>
+                <td>${item.fields.description}</td>
+                <td>${item.fields.date_added}</td>
+            </tr>` 
+            })
+            
+            document.getElementById("product_table").innerHTML = htmlString
+        }
+
+        refreshProducts()
+        function addProduct() {
+            fetch("{% url 'main:add_product_ajax' %}", {
+                method: "POST",
+                body: new FormData(document.querySelector('#form'))
+            }).then(refreshProducts)
+
+            document.getElementById("form").reset()
+            return false
+        }
+        document.getElementById("button_add").onclick = addProduct
+    </script>
 
 {% endblock content %}
