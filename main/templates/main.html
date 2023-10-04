@@ -1,9 +1,23 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <div class="store_title">
-        <h1>James Bicycle Store</h1>
-    </div>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+        <a class="navbar-brand">James Bicycle Store</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{% url 'main:logout' %}">Logout</a>
+            </li>
+            </ul>
+        </div>
+        </div>
+    </nav>
+
+    <br />
 
     <div class="label">
         <h3>Nama: {{ name }}</h3>
@@ -25,10 +39,10 @@
                 <th class="box-0lax">Add/Sub</th>
                 <th class="box-0lax">Description</th>
                 <th class="box-0lax">Date Added</th>
-                <th class="box-0lax">Delete Product</th>
+                <th class="box-0lax">Options</th>
             </tr>
         </thead>
-    
+
         {% comment %} Berikut cara memperlihatkan data produk di bawah baris ini {% endcomment %}
         <tbody>
             {% for product in products %}
@@ -49,6 +63,7 @@
                     <td class="box-0lax">{{ product.description }}</td>
                     <td class="box-0lax">{{ product.date_added }}</td>
                     <td class="box-0lax">
+                        <a href="{% url 'main:edit_product' product.id %}">Edit</a>
                         <a href="{% url 'main:delete_product' product.id %}">Delete</a>
                     </td>
                 </tr>
@@ -66,9 +81,14 @@
         </a>
     </div>
 
+    <br />
+
     <div style="text-align: center;">
         <h5>Sesi terakhir login: {{ last_login }}</h5>
     </div>
+
+    <br />
+
     <div style="text-align: center;">
         <a href="{% url 'main:logout' %}">
             <button>
@@ -76,6 +96,8 @@
             </button>
         </a>
     </div>
+
+    <br />
 
     <div class="marquee-container">
         <marquee behavior="scroll" direction="right" style="color: white ; font-size: 20px;" class="marquee-container" scrollamount="15">

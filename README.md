@@ -1058,3 +1058,55 @@ path('decrement_amount/<int:id>/', decrement_amount, name='decrement_amount'),
 ```
 
 6. Menjalankan server dengan perintah `python manage.py runserver` dan tombol `add` dan `sub` seharusnya sudah ditampilkan di kolom sebelah `Amount`.
+
+# Tugas 5
+
+## Jelaskan Manfaat dari Setiap *Element Selector* dan Kapan Waktu yang Tepat untuk Menggunakannya
+### Element Selector (`tagname`)
+Selector ini memilih semua elemen dengan tag yang sesuai. Kelebihannya adalah sederhana dan mudah digunakan. Selector ini dapat digunakan ketika ingin menerapkan *general style* pada semua elemen dengan tag yang sama, misalnya mengubah semua teks pada elemen <p> menjadi warna biru.
+
+### Class Selector (`.classname`)
+Class selector berfungsi untuk memilih elemen berdasarkan nama kelas yang diberikan. Selector ini akan sangat berguna ketika ingin menerapkan gaya yang sama pada beberapa elemen yang tidak perlu memiliki tag yang sama. Misalnya, kita bisa menggunakan class selector untuk mengubah warna teks pada beberapa elemen <div> tanpa harus memberikan tag yang sama untuk semua elemen tersebut.
+
+### ID Selector (`#idname`)
+ID Selector memilih elemen dengan atribut `id` yang sesuai. Selector ini digunakan ketika kita ingin menerapkan gaya atau memanipulasi elemen unik tertentu pada halaman HTML. ID harus unik dalam satu halaman, sehingga selector ini cocok untuk digunakan pada elemen - elemen yang hanya ada satu dalam halaman.
+
+### Universal Selector (`*`)
+Universal selector memilih semua elemen dalam dokumen HTML. Selector ini sebaiknya digunakan dengan hati-hati karena dapat memiliki dampak besar pada performa halaman HTML. Selector dapat digunakan hanya dalam situasi tertentu, seperti menetapkan margin dan padding standar ke nol untuk menghindari perbedaan bawaan antara browser.
+
+### Pseudo-Class Selector (`:pseudo-class`)
+Pseudo-class selector digunakan untuk memilih elemen dalam kondisi tertentu atau dalam keadaan tertentu, seperti elemen yang sedang dihover oleh kursor atau elemen yang berada dalam keadaan aktif. Selector ini bermanfaat untuk memberikan interaksi dan tampilan yang dinamis pada elemen.
+
+## Beberapa Contoh HTML5 Tag
+1. `<header>` : Menunjukkan bagian judul utama atau sub judul dalam halaman web, dengan contoh penerapan seperti <h1>Judul</h1> untuk Heading 1.
+2. `<nav>` : Mengelompokkan elemen-elemen yang berfungsi sebagai menu navigasi.
+3. `<section>` : Membagi halaman web menjadi bagian-bagian yang berbeda, seperti bagian untuk berita, artikel, atau konten lainnya.
+4. `<article>` : Mendefinisikan konten yang dapat berdiri sendiri, seperti artikel berita atau blog.
+5. `<aside>` : Menunjukkan konten yang berhubungan dengan konten di sekitarnya, seperti sidebar.
+6. `<footer` : Bagian bawah dari sebuah halaman web dan berisi informasi seperti hak cipta atau tautan ke halaman terkait.
+
+## Perbedaan Antara Margin dan Padding
+### Margin
+Margin adalah jarak antara elemen dengan elemen-elemen di luarnya (biasanya elemen tetangga). Margin digunakan untuk mengatur ruang antara elemen tersebut dan elemen-elemen lain di sekitarnya. Margin tidak memiliki background color dan tidak akan mengubah warna latar belakang elemen tersebut.
+
+### Padding
+Padding adalah jarak antara konten elemen dan batas elemen itu sendiri. Padding digunakan untuk mengatur ruang antara konten elemen dan tepi elemen tersebut. Padding dapat memiliki background color dan akan mempengaruhi warna latar belakang elemen.
+
+## Perbedaan antara CSS Framework Bootstrap dan Tailwind
+### Bootstrap
+* Menyediakan desain bawaan yang lebih lengkap dan atraktif secara visual.
+* Menggunakan kelas-kelas yang lebih banyak, sehingga memungkinkan pembuatam *interface* lebih cepat dengan penulisan HTML yang lebih sedikit.
+* Lebih cocok untuk proyek-proyek yang memerlukan pengembangan cepat dan desain yang sudah ada.
+
+### Tailwind CSS
+* Lebih modular dan memungkinkan kustomisasi setiap komponen dengan lebih rinci.
+* Tidak memiliki gaya desain bawaan, sehingga tampilannya lebih minimalis.
+* Menggunakan kelas-kelas kecil untuk mengatur styling, yang memerlukan lebih banyak penulisan HTML.
+* Cocok untuk proyek-proyek yang memerlukan desain kustom yang sangat spesifik.
+
+## Kapan Sebaiknya Menggunakan Bootstrap atau Tailwind CSS ?
+* Sebaiknya gunakan Bootstrap jika kita ingin mengembangkan dengan cepat dan kita tidak memiliki banyak waktu untuk menyesuaikan desain. Ini juga cocok jika kita tidak memiliki pengalaman desain web yang banyak.
+
+* Sebaiknya gunakan Tailwind CSS jika kita ingin desain yang sangat kustom dan kita memiliki waktu untuk mengatur setiap detailnya. Ini cocok jika kita ingin menciptakan tampilan yang unik dan sesuai dengan kebutuhan proyek kita.
+
+## Implementasi Langkah Pengerjaan Tugas
