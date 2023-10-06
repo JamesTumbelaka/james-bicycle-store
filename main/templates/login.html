@@ -5,10 +5,21 @@
 {% endblock meta %}
 
 {% block content %}
+<nav class="navbar bg-dark border-bottom border-body navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
+    <div class="container-fluid">
+        <a class="navbar-brand">James Bicycle Store</a>
+    </div>
+</nav>
+
+<br />
+
+<div class="card" style="width: 18rem;">
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item">User Login</li>
+    </ul>
+</div>
 
 <div class = "login">
-
-    <h1>Login</h1>
 
     <form method="POST" action="">
         {% csrf_token %}
@@ -22,15 +33,13 @@
                 <td>Password : </td>
                 <td><input type="password" name="password" placeholder="Password" class="form-control"></td>
             </tr>
-
-            <tr>
-                <td></td>
-                <td><div class="login-button">
-                        <input class="btn login_btn" type="submit" value="Login">
-                    </div>
-                </td>
-            </tr>
         </table>
+        
+        <br />
+
+        <div class="login_button">
+            <input class="btn btn-primary" type="submit" value="Login">
+        </div>
     </form>
 
     {% if messages %}
@@ -40,6 +49,8 @@
             {% endfor %}
         </ul>
     {% endif %}     
+
+    <br />
         
     Don't have an account yet? <a href="{% url 'main:register' %}">Register Now</a>
 
