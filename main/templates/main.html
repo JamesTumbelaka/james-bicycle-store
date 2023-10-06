@@ -34,7 +34,7 @@
     <div class="current_total_item">
         <p>anda menyimpan {{ total_items }} sepeda pada aplikasi ini</p>
     </div>
-    
+
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -121,16 +121,12 @@
                 <td>${item.fields.date_added}</td>
                 <td>
                     <a href="edit-product/${item.pk}">
-                        <button>
-                            Edit
-                        </button>
+                        <button type="button" class="btn btn-sm btn-primary">Edit</button>
                     </a>
                 </td>
                 <td>
                     <a href="delete/${item.pk}">
-                        <button>
-                            Delete
-                        </button>
+                        <button type="button" class="btn btn-sm btn-primary">Delete</button>
                     </a>
                 </td>
             </tr>` 
