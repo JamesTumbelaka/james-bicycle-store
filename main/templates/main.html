@@ -103,10 +103,11 @@
         async function refreshProducts() {
             document.getElementById("product_table").innerHTML = ""
             const products = await getProducts()
-            let htmlString = `<tr style="text-align: center;">
+            let htmlString = `<tr class="table-dark" style="text-align: center;">
                 <th>Name</th>
                 <th>Price</th>
                 <th>Amount</th>
+                <th>Modify Amount</th>
                 <th>Description</th>
                 <th>Date Added</th>
                 <th>Edit Product</th>
@@ -117,6 +118,14 @@
                 <td>${item.fields.name}</td>
                 <td>${item.fields.price}</td>
                 <td>${item.fields.amount}</td>
+                <td>
+                    <a href="decrement_amount/${item.pk}">
+                        <button type="button" class="btn btn-sm btn-secondary">-</button>
+                    </a>
+                    <a href="increment_amount/${item.pk}">
+                        <button type="button" class="btn btn-sm btn-secondary">+</button>
+                    </a>
+                </td>
                 <td>${item.fields.description}</td>
                 <td>${item.fields.date_added}</td>
                 <td>
@@ -126,7 +135,7 @@
                 </td>
                 <td>
                     <a href="delete/${item.pk}">
-                        <button type="button" class="btn btn-sm btn-primary">Delete</button>
+                        <button type="button" class="btn btn-sm btn-danger">Delete</button>
                     </a>
                 </td>
             </tr>` 
