@@ -35,11 +35,11 @@
         <p>anda menyimpan {{ total_items }} sepeda pada aplikasi ini</p>
     </div>
 
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Add New Product</h1>
+                    <h1 class="modal-title fs-5" id="productModalLabel">Add New Product</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -79,7 +79,7 @@
     <br />
 
     <div class="add_product_ajax_button">
-        <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Add Product by AJAX</button>
+        <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#productModal">Add Product by AJAX</button>
     </div>
 
     <br />
@@ -134,7 +134,7 @@
                     </a>
                 </td>
                 <td>
-                    <a href="delete/${item.pk}">
+                    <a onclick="deleteProduct(${item.pk})">
                         <button type="button" class="btn btn-sm btn-danger">Delete</button>
                     </a>
                 </td>
@@ -160,8 +160,23 @@
         document.getElementById("addProductLink").addEventListener("click", function(event) {
             event.preventDefault(); // Prevent the default behavior of the link
             // Trigger a click on the modal button
-            document.querySelector('[data-bs-target="#exampleModal"]').click();
+            document.querySelector('[data-bs-target="#productModal"]').click();
         });
+        async function deleteProduct(productId) {
+            try {
+                const response = await fetch(`{% url 'main:delete_product_ajax' 0 %}`.replace('0', productId), {
+                    method: "POST"
+                });
+
+                if (response.ok) {
+                    refreshProducts();
+                } else {
+                    alert("Delete failed. Please try again.");
+                }
+            } catch (error) {
+                console.error("Error while deleting product:", error);
+            }
+        }
     </script>
         
 
