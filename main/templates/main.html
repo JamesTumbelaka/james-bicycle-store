@@ -168,9 +168,8 @@
                 <th>Description</th>
                 <th>Date Added</th>
                 <th>Edit Product</th>
-                <th>Delete Product</th>
                 <th>Edit Product Ajax</th>
-                <th>Del</th>
+                <th>Delete Product</th>
             </tr>`
             products.forEach((item) => {
                 htmlString += `\n<tr style="text-align: center;">
@@ -193,17 +192,12 @@
                     </a>
                 </td>
                 <td>
-                    <a onclick="deleteProduct(${item.pk})">
-                        <button type="button" class="btn btn-sm btn-danger">Delete</button>
-                    </a>
-                </td>
-                <td>
                     <a onclick="openEditModal(${item.pk}, '${item.fields.name}', ${item.fields.price}, ${item.fields.amount}, '${item.fields.description}')">
                         <button type="button" class="btn btn-sm btn-primary">Edit</button>
                     </a>
                 </td>
                 <td>
-                    <button type="button" class="btn btn-sm btn-primary" onclick="showConfirmationModal(${item.pk})">Del</button>
+                    <button type="button" class="btn btn-sm btn-danger" onclick="showConfirmationModal(${item.pk})">Delete</button>
                 </td>
             </tr>` 
             })
