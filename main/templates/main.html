@@ -264,7 +264,7 @@
 
         function editProduct() {
             console.log("Edit button clicked");
-            
+
             const productId = document.getElementById('productId').value;
             const name = document.getElementById('editName').value;
             const price = document.getElementById('editPrice').value;
@@ -300,8 +300,7 @@
 
                 if (data.message === "Product updated successfully") {
                     refreshProducts();
-                    const editProductModal = new bootstrap.Modal(document.getElementById('editProductModal'));
-                    editProductModal.hide();
+                    $('#editProductModal').modal('hide');
                 } else {
                     alert("Edit failed. Please try again.");
                 }
@@ -312,17 +311,6 @@
             });
         }
 
-        document.getElementById("editProductButton").addEventListener("click", function(event) {
-            console.log("Edit Product button clicked");
-
-            event.preventDefault();
-            const productId = document.getElementById('productId').value;
-            const name = document.getElementById('editName').value;
-            const price = document.getElementById('editPrice').value;
-            const amount = document.getElementById('editAmount').value;
-            const description = document.getElementById('editDescription').value;
-            openEditModal(productId, name, price, amount, description);
-        });
 
         document.getElementById("editProductSubmit").addEventListener("click", function(event) {
             console.log("Save Changes button clicked");
