@@ -71,6 +71,44 @@
         </div>
     </div>
 
+    <div class="modal fade" id="editProductModal" tabindex="-1" aria-labelledby="editProductModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="editProductModalLabel">Edit Product</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editForm" onsubmit="return false;">
+                        {% csrf_token %}
+                        <input type="hidden" id="productId">
+                        <div class="mb-3">
+                            <label for="name" class="col-form-label">Name:</label>
+                            <input type="text" class="form-control" id="editName" name="name"></input>
+                        </div>
+                        <div class="mb-3">
+                            <label for="price" class="col-form-label">Price:</label>
+                            <input type="number" class="form-control" id="editPrice" name="price"></input>
+                        </div>
+                        <div class="mb-3">
+                            <label for="amount" class="col-form-label">Amount:</label>
+                            <input type="number" class="form-control" id="editAmount" name="amount"></input>
+                        </div>
+                        <div class="mb-3">
+                            <label for="description" class="col-form-label">Description:</label>
+                            <textarea class="form-control" id="editDescription" name="description"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="editProductSubmit">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
     <div style="margin-left: 30px; margin-right: 30px;">
         <table id="product_table" class="table table-bordered table-light table-striped">
         </table>
@@ -114,6 +152,7 @@
                 <th>Date Added</th>
                 <th>Edit Product</th>
                 <th>Delete Product</th>
+                <th>Edit Product Ajax</th>
             </tr>`
             products.forEach((item) => {
                 htmlString += `\n<tr style="text-align: center;">
@@ -121,10 +160,10 @@
                 <td>${item.fields.price}</td>
                 <td>${item.fields.amount}</td>
                 <td>
-                    <a href="decrement_amount/${item.pk}" style="text-decoration: none;>
+                    <a href="decrement_amount/${item.pk}" style="text-decoration: none;">
                         <button type="button" class="btn btn-sm btn-secondary">-</button>
                     </a>
-                    <a href="increment_amount/${item.pk}" style="text-decoration: none;>
+                    <a href="increment_amount/${item.pk}" style="text-decoration: none;">
                         <button type="button" class="btn btn-sm btn-secondary">+</button>
                     </a>
                 </td>
@@ -138,6 +177,11 @@
                 <td>
                     <a onclick="deleteProduct(${item.pk})">
                         <button type="button" class="btn btn-sm btn-danger">Delete</button>
+                    </a>
+                </td>
+                <td>
+                    <a onclick="openEditModal(${item.pk}, '${item.fields.name}', ${item.fields.price}, ${item.fields.amount}, '${item.fields.description}')">
+                        <button type="button" class="btn btn-sm btn-primary">Edit</button>
                     </a>
                 </td>
             </tr>` 
@@ -158,10 +202,9 @@
             return false
         }
 
-        document.getElementById("button_add").onclick = addProduct
+        document.getElementById("button_add").onclick = addProduct;
         document.getElementById("addProductLink").addEventListener("click", function(event) {
             event.preventDefault(); // Prevent the default behavior of the link
-            // Trigger a click on the modal button
             document.querySelector('[data-bs-target="#productModal"]').click();
         });
         async function deleteProduct(productId) {
@@ -179,6 +222,86 @@
                 console.error("Error while deleting product:", error);
             }
         }
+        function openEditModal(productId, name, price, amount, description) {
+            document.getElementById('productId').value = productId;
+            document.getElementById('editName').value = name;
+            document.getElementById('editPrice').value = price;
+            document.getElementById('editAmount').value = amount;
+            document.getElementById('editDescription').value = description;
+
+            const editProductModal = new bootstrap.Modal(document.getElementById('editProductModal'));
+            editProductModal.show();
+        }
+
+        function editProduct() {
+            console.log("Edit button clicked");
+            
+            const productId = document.getElementById('productId').value;
+            const name = document.getElementById('editName').value;
+            const price = document.getElementById('editPrice').value;
+            const amount = document.getElementById('editAmount').value;
+            const description = document.getElementById('editDescription').value;
+
+            console.log("Data retrieved from the form:", productId, name, price, amount, description); // Check if data is retrieved correctly
+
+            fetch(`{% url 'main:edit_product_ajax' 0 %}`.replace('0', productId), {
+                method: "POST",
+                body: new URLSearchParams({
+                    name: name,
+                    price: price,
+                    amount: amount,
+                    description: description,
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                }),
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+            })
+            .then((response) => {
+                console.log("Response status:", response.status);
+
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error(`Server returned status ${response.status}`);
+                }
+            })
+            .then((data) => {
+                console.log("Response data:", data);
+
+                if (data.message === "Product updated successfully") {
+                    refreshProducts();
+                    const editProductModal = new bootstrap.Modal(document.getElementById('editProductModal'));
+                    editProductModal.hide();
+                } else {
+                    alert("Edit failed. Please try again.");
+                }
+            })
+            .catch((error) => {
+                console.error("Error while editing product:", error);
+                alert("Edit failed. Please try again.");
+            });
+        }
+
+        document.getElementById("editProductButton").addEventListener("click", function(event) {
+            console.log("Edit Product button clicked");
+
+            event.preventDefault();
+            const productId = document.getElementById('productId').value;
+            const name = document.getElementById('editName').value;
+            const price = document.getElementById('editPrice').value;
+            const amount = document.getElementById('editAmount').value;
+            const description = document.getElementById('editDescription').value;
+            openEditModal(productId, name, price, amount, description);
+        });
+
+        document.getElementById("editProductSubmit").addEventListener("click", function(event) {
+            console.log("Save Changes button clicked");
+
+            event.preventDefault();
+            editProduct();
+        });
+
     </script>
         
 

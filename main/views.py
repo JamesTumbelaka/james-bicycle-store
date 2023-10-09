@@ -162,27 +162,25 @@ def delete_product_ajax(request, id):
         return HttpResponseRedirect(reverse('main:show_main'))
     return HttpResponseNotFound()
 
-'''@csrf_exempt
+@csrf_exempt
 def edit_product_ajax(request, id):
     if request.method == 'POST':
         try:
             product = Product.objects.get(pk=id)
+            name = request.POST.get("name")
+            price = request.POST.get("price")
+            amount = request.POST.get("amount")
+            description = request.POST.get("description")
+            
+            product.name = name
+            product.price = price
+            product.amount = amount
+            product.description = description
+
+            product.save()
+            
+            return JsonResponse({"message": "Product updated successfully"}, status=200)
         except Product.DoesNotExist:
             return JsonResponse({"error": "Product not found"}, status=404)
-
-        name = request.POST.get("name")
-        price = request.POST.get("price")
-        amount = request.POST.get("amount")
-        description = request.POST.get("description")
-        
-        product.name = name
-        product.price = price
-        product.amount = amount
-        product.description = description
-
-        product.save()
-        
-        return HttpResponse("Product updated successfully", status=200, content_type="text/plain")
     
-    return HttpResponseNotFound()
-'''
+    return JsonResponse({"error": "Invalid request method"}, status=405)
