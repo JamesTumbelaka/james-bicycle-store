@@ -2,6 +2,7 @@ Nama        : James Zefanya Tumbelaka
 NPM         : 2206824653
 Kelas       : PBP E
 Adaptable   : https://james-bicycle-store.adaptable.app/
+Link Web    : http://james-zefanya-tugas.pbp.cs.ui.ac.id/
 
 # Membuat sebuah proyek Django baru.
 1. Membuat direktori baru untuk proyek Django baru.
@@ -1307,3 +1308,415 @@ path('edit-product/<int:id>', edit_product, name='edit_product'),
 ```
 
 6. Menjalankan proyek Django dengan perintah `python manage.py runserver` dan fitur edit produk sudah dapat terlihat di ujung setiap baris produk dan berfungsi dengan seharusnya.
+
+# Tugas 6
+
+## Jelaskan Perbedaan antara *Asynchronous Programming* dengan *Synchronous Programming*
+
+Pada pemrograman asinkronus, *task - task* akan dieksekusi tanpa harus menunggu tugas sebelumnya selesai. Sebuah tugas dapat dimulai, kemudian tugas lain akan dapat dimulai sebelum tugas pertama selesai. Hal ini berguna untuk mengatasi operasi I/O yang memakan banyak waktu. Hal ini membuat aplikasi terasa lebih responsif dan memungkinkan aplikasi untuk mengelola banyak operasi secara bersamaan.
+
+Pada pemrograman sinkronus atau *blocking*, *task - task* akan dieksekusi secara berurutan. Task berikutnya harus menunggu *task* sebelumnya selesai dieksekusi sebelum dapat dijalankan. Jika terdapat operasi I/O yang memakan waktu banyak, seperti menarik data dari server, maka seluruh eksekusi program JS akan berhenti dan menunggu operasi selesai. Hal ini akan mengakibatkan aplikasi terasa lambat dan kurang responsif jika terdapat operasi berjalan yang memakan banyak waktu.
+
+## Jelaskan Maksud dari Paradigma *Event-Driven Programming* dan Sebut Salah Satu Contoh Penerapannya
+
+Paradigma *Event-Driven Programming* merupakan pendekatan pemrograman dimana *execution flow* program tidak ditentukan oleh urutan *task* yang sudah didefinisikan terlebih dahulu, melainkan berdasarkan kejadian atau events yang terjadi selama eksekusi program. Program dapat merespon kejadian yang terjadi secara asinkronus, seperti user interaction, input, dan event lainnya yang akan men-trigger fungsi web yang sesuai.
+
+Salah satu contohnya adalah menambahkan *event listener* dalam sebuah button yang akan memanggil fungsi sesuai dengan yang sudah didefinisikan dalam script.
+
+```HTML
+<body>
+    <button id="myButton">Klik</button>
+    <p id="output"></p>
+
+    <script>
+        // Mendapatkan referensi ke elemen tombol
+        var button = document.getElementById("myButton");
+
+        // Menambahkan event listener ke tombol
+        button.addEventListener("click", function() {
+            // Ketika tombol di-klik, tindakan ini akan dijalankan
+            var output = document.getElementById("output");
+            output.innerHTML = "Tombol telah diklik!";
+        });
+    </script>
+</body>
+```
+
+## Jelaskan Penerapan *Asynchronous Programming* pada AJAX
+
+Berikut langkah - langkah yang umum dilakukan dalam menerapkan *asynchronous programming* pada AJAX:
+1. Membuat `asynchronous request` ke server.
+2. Mendefinisikan fungsi respons yang akan dijalankan ketika respons dari server diterima, biasa disebut sebagai *callback function*.
+3. Mengirim permintaan ke server dengan metode `GET` atau `POST`.
+4. Program menunggu respons.
+5. Program menangani respons setelah server merespons, dengan menjalankan `callback function` yang sudah didefinisikan.
+
+## Bandingkan Fetch API dengan Library jQuery dan Tuliskan Pendapat Terkait Teknologi Manakah yang Lebih Baik untuk Digunakan
+
+### Fetch API
+
+Beberapa kelebihan dari penggunaan `Fetch API` yakni Native Browser Support, penggunaan konsep Promise (kode asinkron lebih mudah dibaca), serta lebih fleksibel, dimana web developer memiliki lebih banyak kontrol atas permintaan dan respons HTTP. Kekurangan dari `Fetch API` adalah dari segi *learning curve* untuk developer, dimana memerlukan banyak pengalaman untuk dapat beradaptasi, terutama untuk konsep Promises.
+
+### jQuery
+
+Kelebihan utama dari penggunaan `jQuery` adalah dari segi kemudahan penggunaan, dimana `jQuery` dirancang untuk menyederhanakan *common tasks* pada *web development*, sehingga dapat membuat proses pengembangan lebih cepat.
+
+### Pendapat
+
+Menurut pendapat saya, dengan mempertimbangkan kelebihan dan kekurangan teknologi masing - masing, `Fetch API` lebih baik untuk digunakan, terutama untuk memahami konsep - konsep dasar dari JavaScript, untuk memperoleh *skill* yang *transferrable* ke proyek - proyek web lain.
+
+# Langkah Implementasi Checklist
+
+## AJAX GET
+
+1. Membuka berkas `views.py` dan membuat fungsi baru bernama `get_product_json` yang menerima parameter `request` dan mengisinya dengan kode seperti berikut.
+
+```python
+def get_product_json(request):
+    product_item = Product.objects.filter(user=request.user)
+    return HttpResponse(serializers.serialize('json', product_item))
+```
+
+2.  Membuka berkas `urls.py` dan membuat path url untuk fungsi yang sudah dibuat.
+
+```python
+...
+path('get-product/', get_product_json, name='get_product_json'),
+...
+```
+
+3. Membuka berkas `main.html` dan membuat block `<script>` di bagian bawah berkas dan menambahkan fungsi baru dengan nama `getProducts()`.
+
+```HTML
+<script>
+    async function getProducts() {
+        return fetch("{% url 'main:get_product_json' %}").then((res) => res.json())
+    }
+</script>
+```
+
+4. Mengubah bagian kode tabel di `main.html` menjadi bentuk seperti ini sehingga lebih mudah diproses dengan Ajax.
+
+```HTML
+<div style="margin-left: 30px; margin-right: 30px;">
+        <table id="product_table" class="table table-bordered table-light table-striped">
+        </table>
+</div>
+```
+
+## AJAX POST
+
+1. Membuka berkas `views.py` , mengimpor `@csrf_exempt`, dan membuat fungsi `add_product_ajax` yang menerima parameter `request`dan mengisinya dengan kode seperti berikut.
+
+```python
+from django.views.decorators.csrf import csrf_exempt
+...
+@csrf_exempt
+def add_product_ajax(request):
+    if request.method == 'POST':
+        name = request.POST.get("name")
+        price = request.POST.get("price")
+        amount = request.POST.get("amount")
+        description = request.POST.get("description")
+        user = request.user
+
+        new_product = Product(name=name, price=price, amount=amount, description=description, user=user)
+        new_product.save()
+
+        return HttpResponse(b"CREATED", status=201)
+
+    return HttpResponseNotFound()
+```
+
+2. Membuka berkas `urls.py` dan membuat path url untuk memanggil fungsi yang sudah dibuat.
+
+```python
+...
+path('create-ajax/', add_product_ajax, name='add_product_ajax'),
+...
+```
+
+3. Membuka berkas `main.html` dan menambahkan fungsi `refreshProducts()` untuk melakukan refresh pada halaman utama secara asinkronus untuk menampilkan daftar sepeda yang sudah diperbarui tanpa reload halaman utama secara keseluruhan.
+
+```HTML
+<script>
+    ...
+    async function refreshProducts() {
+        document.getElementById("product_table").innerHTML = ""
+        const products = await getProducts()
+        let htmlString = `<tr class="table-dark" style="text-align: center;">
+            <th>Name</th>
+            <th>Price</th>
+            <th>Amount</th>
+            <th>Modify Amount</th>
+            <th>Description</th>
+            <th>Date Added</th>
+            <th>Edit Product</th>
+            <th>Delete Product</th>
+        </tr>`
+        products.forEach((item) => {
+            htmlString += `\n<tr style="text-align: center;">
+            <td>${item.fields.name}</td>
+            <td>${item.fields.price}</td>
+            <td>${item.fields.amount}</td>
+            <td>
+                <a href="decrement_amount/${item.pk}" style="text-decoration: none;">
+                    <button type="button" class="btn btn-sm btn-secondary">-</button>
+                </a>
+                <a href="increment_amount/${item.pk}" style="text-decoration: none;">
+                    <button type="button" class="btn btn-sm btn-secondary">+</button>
+                </a>
+            </td>
+            <td>${item.fields.description}</td>
+            <td>${item.fields.date_added}</td>
+            <td>
+                <a onclick="openEditModal(${item.pk}, '${item.fields.name}', ${item.fields.price}, ${item.fields.amount}, '${item.fields.description}')">
+                    <button type="button" class="btn btn-sm btn-primary">Edit</button>
+                </a>
+            </td>
+            <td>
+                <button type="button" class="btn btn-sm btn-danger" onclick="showConfirmationModal(${item.pk})">Delete</button>
+            </td>
+        </tr>` 
+        })
+        
+        document.getElementById("product_table").innerHTML = htmlString
+    }
+
+    refreshProducts()
+</script>
+```
+
+4. Membuat tombol yang akan membuka modal untuk melakukan `add product`.
+
+```HTML
+<div class="add_product_ajax_button">
+        <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#productModal">Add Product by AJAX</button>
+</div>
+```
+
+5. Membuat modal yang akan berfungsi untuk mengisi data produk yang akan ditambahkan kedalam daftar produk.
+
+```HTML
+...
+<div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="productModalLabel">Add New Product</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="form" onsubmit="return false;">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="name" class="col-form-label">Name:</label>
+                        <input type="text" class="form-control" id="name" name="name"></input>
+                    </div>
+                    <div class="mb-3">
+                        <label for="price" class="col-form-label">Price:</label>
+                        <input type="number" class="form-control" id="price" name="price"></input>
+                    </div>
+                    <div class="mb-3">
+                        <label for="amount" class="col-form-label">Amount:</label>
+                        <input type="number" class="form-control" id="amount" name="amount"></input>
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="col-form-label">Description:</label>
+                        <textarea class="form-control" id="description" name="description"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="button_add" data-bs-dismiss="modal">Add Product</button>
+            </div>
+        </div>
+    </div>
+</div>
+...
+```
+
+6. Membuat fungsi JavaScript pada bagian blok `<script>` untuk menambah produk menggunakan Ajax.
+
+```HTML
+<script>
+    ...
+    function addProduct() {
+        fetch("{% url 'main:add_product_ajax' %}", {
+            method: "POST",
+            body: new FormData(document.querySelector('#form'))
+        }).then(refreshProducts)
+
+        document.getElementById("form").reset()
+        return false
+    }
+    ...
+</script>
+```
+
+7. Menambahkan potongan kode berikut untuk menghubungkan tombol dengan fungsi yang akan memanggil modal produk dan menambahkan hasilnya ke daftar produk.
+
+```HTML
+<script>
+    document.getElementById("button_add").onclick = addProduct;
+    document.getElementById("addProductLink").addEventListener("click", function(event) {
+        event.preventDefault(); // Prevent the default behavior of the link
+        document.querySelector('[data-bs-target="#productModal"]').click();
+    });
+</script>
+```
+
+8. Melakukan *refresh page* dan fitur *add product* dengan Ajax sudah berfungsi seperti seharusnya.
+
+## Melakukan Perintah `collectstatic`
+
+1. Membuka terminal pada direktori utama dan menjalankan perintah berikut untuk mengumpulkan file static dari setiap aplikasi ke dalam suatu folder yang dapat dengan mudah disajikan pada produksi.
+
+```sh
+python manage.py collectstatic
+```
+
+2. Folder `static` sudah terbentuk di dalam direktori utama.
+
+## Penjelasan Langkah Jawaban Soal Bonus
+
+1. Membuka berkas `views.py` dan membuat fungsi baru yang menerima parameter `request` dan `id` dengan nama `delete_product_ajax`.
+
+```python
+...
+@csrf_exempt
+def delete_product_ajax(request, id):
+    product = Product.objects.get(pk = id)
+    if request.method == 'POST':
+        product.delete()
+        return HttpResponseRedirect(reverse('main:show_main'))
+    return HttpResponseNotFound()
+...
+```
+
+2. Membuka berkas `urls.py` dan membuat path url untuk memanggil fungsi yang baru dibuat sebelumnya.
+
+```python
+...
+path('delete-product-ajax/<int:id>/', delete_product_ajax, name='delete_product_ajax'),
+...
+```
+
+3. Membuka berkas `main.html` dan menambahkan fungsi dengan nama `deleteProduct()` yang menerima parameter `productID` pada blok `<script>` untuk mengakses fungsi yang sudah dibuat, dan mengisinya dengan kode berikut.
+
+```HTML
+<script>
+    ...
+    function deleteProduct(productId) {
+        fetch(`{% url 'main:delete_product_ajax' 0 %}`.replace('0', productId), {
+            method: "POST"
+        })
+        .then((response) => {
+            if (response.ok) {
+                refreshProducts();
+            } else {
+                alert("Delete failed. Please try again.");
+            }
+        })
+        .catch((error) => {
+            console.error("Error while deleting product:", error);
+            alert("Delete failed. Please try again.");
+        });
+    }
+    ...
+</script>
+```
+
+4. Membuat modal konfirmasi penghapusan produk yang akan muncul jika tombol delete ditekan.
+
+```HTML
+<div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="confirmationModalLabel">Confirm Deletion</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to remove this bicycle ?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" id="confirmDelete" data-bs-dismiss="modal">Remove</button>
+            </div>
+        </div>
+    </div>
+</div>
+```
+
+5. Membuat fungsi untuk menampilkan `confirmationModal` setelah tombol Delete ditekan.
+```HTML
+<script>
+    function showConfirmationModal(productId) {
+            document.getElementById("confirmDelete").setAttribute("data-product-id", productId);
+
+            document.getElementById("confirmDelete").addEventListener("click", function() {
+                const productId = this.getAttribute("data-product-id");
+                deleteProduct(productId);
+            });
+
+            const confirmationModal = new bootstrap.Modal(document.getElementById('confirmationModal'));
+            confirmationModal.show();
+        }
+</script>
+```
+
+6. Memodifikasi table daftar produk sehingga tombol `delete` terdapat di setiap baris produk.
+
+```HTML
+<script>
+    async function getProducts() {
+        return fetch("{% url 'main:get_product_json' %}").then((res) => res.json())
+    }
+    async function refreshProducts() {
+        document.getElementById("product_table").innerHTML = ""
+        const products = await getProducts()
+        let htmlString = `<tr class="table-dark" style="text-align: center;">
+            <th>Name</th>
+            <th>Price</th>
+            <th>Amount</th>
+            <th>Modify Amount</th>
+            <th>Description</th>
+            <th>Date Added</th>
+            <th>Edit Product</th>
+            <th>Delete Product</th>
+        </tr>`
+        products.forEach((item) => {
+            htmlString += `\n<tr style="text-align: center;">
+            <td>${item.fields.name}</td>
+            <td>${item.fields.price}</td>
+            <td>${item.fields.amount}</td>
+            <td>
+                <a href="decrement_amount/${item.pk}" style="text-decoration: none;">
+                    <button type="button" class="btn btn-sm btn-secondary">-</button>
+                </a>
+                <a href="increment_amount/${item.pk}" style="text-decoration: none;">
+                    <button type="button" class="btn btn-sm btn-secondary">+</button>
+                </a>
+            </td>
+            <td>${item.fields.description}</td>
+            <td>${item.fields.date_added}</td>
+            <td>
+                <a onclick="openEditModal(${item.pk}, '${item.fields.name}', ${item.fields.price}, ${item.fields.amount}, '${item.fields.description}')">
+                    <button type="button" class="btn btn-sm btn-primary">Edit</button>
+                </a>
+            </td>
+            <td>
+                <button type="button" class="btn btn-sm btn-danger" onclick="showConfirmationModal(${item.pk})">Delete</button>
+            </td>
+        </tr>` 
+        })
+        
+        document.getElementById("product_table").innerHTML = htmlString
+    }
+```
+
+7. Melakukan *refresh page* dan tombol `Delete` sudah berfungsi sesuai dengan proses yang sudah didefinisikan sebelumnya.
+
+
