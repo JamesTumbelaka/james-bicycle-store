@@ -6,6 +6,12 @@
 
 {% block content %}  
 
+<nav class="navbar bg-dark border-bottom border-body navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
+    <div class="container-fluid">
+        <a class="navbar-brand">James Bicycle Store</a>
+    </div>
+</nav>
+
 <div class="register-title">
     <div class="card" style="width: 15rem;">
         <ul class="list-group list-group-flush">
@@ -22,15 +28,18 @@
             {% csrf_token %}  
             <table>  
                 {{ form.as_table }}  
-                <tr>  
+                <tr>
                     <td></td>
                     <td>
+                        <a href="{% url 'main:login' %}" class="btn btn-secondary">Cancel</a>
                         <button type="submit" name="submit" class="btn btn-primary">Daftar</button>
                     </td>
-                    
-                </tr>  
+                </tr>
             </table>  
         </form>
+
+        <br />
+    
 
     {% if messages %}  
         <ul>   
