@@ -1699,6 +1699,6 @@ path('delete-product-ajax/<int:id>/', delete_product_ajax, name='delete_product_
         refreshProducts();
 ```
 
-7. Melakukan *refresh page* dan tombol `Delete` sudah berfungsi sesuai dengan proses yang sudah didefinisikan sebelumnya.
+7. Melakukan *refresh page* dan tombol `Delete` sudah berfungsi sesuai dengan proses fungsi yang sudah didefinisikan sebelumnya.
 
 
