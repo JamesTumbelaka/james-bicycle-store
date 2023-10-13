@@ -126,9 +126,8 @@
         </div>
     </div>
     
-    <div style="margin-left: 30px; margin-right: 30px;">
-        <table id="product_table" class="table table-bordered table-light table-striped">
-        </table>
+    <div class="row row-cols-1 row-cols-md-3 row-cols-sm-2 row-cols-xs-1 g-4">
+        
     </div>
 
     <br />
@@ -158,48 +157,39 @@
             return fetch("{% url 'main:get_product_json' %}").then((res) => res.json())
         }
         async function refreshProducts() {
-            document.getElementById("product_table").innerHTML = ""
-            const products = await getProducts()
-            let htmlString = `<tr class="table-dark" style="text-align: center;">
-                <th>Name</th>
-                <th>Price</th>
-                <th>Amount</th>
-                <th>Modify Amount</th>
-                <th>Description</th>
-                <th>Date Added</th>
-                <th>Edit Product</th>
-                <th>Delete Product</th>
-            </tr>`
-            products.forEach((item) => {
-                htmlString += `\n<tr style="text-align: center;">
-                <td>${item.fields.name}</td>
-                <td>${item.fields.price}</td>
-                <td>${item.fields.amount}</td>
-                <td>
-                    <a href="decrement_amount/${item.pk}" style="text-decoration: none;">
-                        <button type="button" class="btn btn-sm btn-secondary">-</button>
-                    </a>
-                    <a href="increment_amount/${item.pk}" style="text-decoration: none;">
-                        <button type="button" class="btn btn-sm btn-secondary">+</button>
-                    </a>
-                </td>
-                <td>${item.fields.description}</td>
-                <td>${item.fields.date_added}</td>
-                <td>
-                    <a onclick="openEditModal(${item.pk}, '${item.fields.name}', ${item.fields.price}, ${item.fields.amount}, '${item.fields.description}')">
-                        <button type="button" class="btn btn-sm btn-primary">Edit</button>
-                    </a>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-sm btn-danger" onclick="showConfirmationModal(${item.pk})">Delete</button>
-                </td>
-            </tr>` 
-            })
+            document.querySelector(".row").innerHTML = "";
+            const products = await getProducts();
             
-            document.getElementById("product_table").innerHTML = htmlString
+            products.forEach((item, index) => {
+                const productCard = `
+                    <div class="col">
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <h5 class="card-title">${item.fields.name}</h5>
+                                <p class="card-text">${item.fields.description}</p>
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">Price: ${item.fields.price}</li>
+                                <li class="list-group-item">Amount: ${item.fields.amount}</li>
+                                <li class="list-group-item">Date Added: ${item.fields.date_added}</li>
+                            </ul>
+                            <div class="card-body">
+                                <a onclick="openEditModal(${item.pk}, '${item.fields.name}', ${item.fields.price}, ${item.fields.amount}, '${item.fields.description}')">
+                                    <button type="button" class="btn btn-sm btn-primary">Edit</button>
+                                </a>
+                                <button type="button" class="btn btn-sm btn-danger" onclick="showConfirmationModal(${item.pk})">Delete</button>
+                            </div>
+                        </div>
+                    </div>`;
+                
+                const row = document.querySelector(".row");
+                row.innerHTML += productCard;
+
+            
+            });
         }
 
-        refreshProducts()
+        refreshProducts();
 
         function addProduct() {
             fetch("{% url 'main:add_product_ajax' %}", {
@@ -228,16 +218,16 @@
                 }
             })
             .catch((error) => {
-                console.error("Error while deleting product:", error);
+                console.error("Error while deleting item:", error);
                 alert("Delete failed. Please try again.");
             });
         }
 
         function showConfirmationModal(productId) {
-            document.getElementById("confirmDelete").setAttribute("data-product-id", productId);
+            document.getElementById("confirmDelete").setAttribute("data-item-id", productId);
 
             document.getElementById("confirmDelete").addEventListener("click", function() {
-                const productId = this.getAttribute("data-product-id");
+                const productId = this.getAttribute("data-item-id");
                 deleteProduct(productId);
             });
 
@@ -300,7 +290,7 @@
                 }
             })
             .catch((error) => {
-                console.error("Error while editing product:", error);
+                console.error("Error while editing item:", error);
                 alert("Edit failed. Please try again.");
             });
         }
