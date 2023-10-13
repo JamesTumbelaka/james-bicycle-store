@@ -1395,12 +1395,10 @@ path('get-product/', get_product_json, name='get_product_json'),
 </script>
 ```
 
-4. Mengubah bagian kode tabel di `main.html` menjadi bentuk seperti ini sehingga lebih mudah diproses dengan Ajax.
+4. Mengubah bagian kode tabel di `main.html` menjadi bentuk card seperti ini untuk diproses dengan Ajax.
 
 ```HTML
-<div style="margin-left: 30px; margin-right: 30px;">
-        <table id="product_table" class="table table-bordered table-light table-striped">
-        </table>
+<div class="row row-cols-1 row-cols-md-3 row-cols-sm-2 row-cols-xs-1 g-4">
 </div>
 ```
 
@@ -1442,48 +1440,40 @@ path('create-ajax/', add_product_ajax, name='add_product_ajax'),
 <script>
     ...
     async function refreshProducts() {
-        document.getElementById("product_table").innerHTML = ""
-        const products = await getProducts()
-        let htmlString = `<tr class="table-dark" style="text-align: center;">
-            <th>Name</th>
-            <th>Price</th>
-            <th>Amount</th>
-            <th>Modify Amount</th>
-            <th>Description</th>
-            <th>Date Added</th>
-            <th>Edit Product</th>
-            <th>Delete Product</th>
-        </tr>`
-        products.forEach((item) => {
-            htmlString += `\n<tr style="text-align: center;">
-            <td>${item.fields.name}</td>
-            <td>${item.fields.price}</td>
-            <td>${item.fields.amount}</td>
-            <td>
-                <a href="decrement_amount/${item.pk}" style="text-decoration: none;">
-                    <button type="button" class="btn btn-sm btn-secondary">-</button>
-                </a>
-                <a href="increment_amount/${item.pk}" style="text-decoration: none;">
-                    <button type="button" class="btn btn-sm btn-secondary">+</button>
-                </a>
-            </td>
-            <td>${item.fields.description}</td>
-            <td>${item.fields.date_added}</td>
-            <td>
-                <a onclick="openEditModal(${item.pk}, '${item.fields.name}', ${item.fields.price}, ${item.fields.amount}, '${item.fields.description}')">
-                    <button type="button" class="btn btn-sm btn-primary">Edit</button>
-                </a>
-            </td>
-            <td>
-                <button type="button" class="btn btn-sm btn-danger" onclick="showConfirmationModal(${item.pk})">Delete</button>
-            </td>
-        </tr>` 
-        })
-        
-        document.getElementById("product_table").innerHTML = htmlString
-    }
+            document.querySelector(".row").innerHTML = "";
+            const products = await getProducts();
+            
+            products.forEach((item, index) => {
+                const productCard = `
+                    <div class="col">
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <h5 class="card-title">${item.fields.name}</h5>
+                                <p class="card-text">${item.fields.description}</p>
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">Price: ${item.fields.price}</li>
+                                <li class="list-group-item">Amount: ${item.fields.amount}</li>
+                                <li class="list-group-item">Date Added: ${item.fields.date_added}</li>
+                            </ul>
+                            <div class="card-body">
+                                <a onclick="openEditModal(${item.pk}, '${item.fields.name}', ${item.fields.price}, ${item.fields.amount}, '${item.fields.description}')">
+                                    <button type="button" class="btn btn-sm btn-primary">Edit</button>
+                                </a>
+                                <button type="button" class="btn btn-sm btn-danger" onclick="showConfirmationModal(${item.pk})">Delete</button>
+                            </div>
+                        </div>
+                    </div>`;
+                
+                const row = document.querySelector(".row");
+                row.innerHTML += productCard;
 
-    refreshProducts()
+            
+            });
+        }
+
+        refreshProducts();
+    ...
 </script>
 ```
 
@@ -1667,7 +1657,7 @@ path('delete-product-ajax/<int:id>/', delete_product_ajax, name='delete_product_
 </script>
 ```
 
-6. Memodifikasi table daftar produk sehingga tombol `delete` terdapat di setiap baris produk.
+6. Memodifikasi table daftar produk sehingga tombol `delete` terdapat di setiap `Card` produk.
 
 ```HTML
 <script>
@@ -1675,46 +1665,38 @@ path('delete-product-ajax/<int:id>/', delete_product_ajax, name='delete_product_
         return fetch("{% url 'main:get_product_json' %}").then((res) => res.json())
     }
     async function refreshProducts() {
-        document.getElementById("product_table").innerHTML = ""
-        const products = await getProducts()
-        let htmlString = `<tr class="table-dark" style="text-align: center;">
-            <th>Name</th>
-            <th>Price</th>
-            <th>Amount</th>
-            <th>Modify Amount</th>
-            <th>Description</th>
-            <th>Date Added</th>
-            <th>Edit Product</th>
-            <th>Delete Product</th>
-        </tr>`
-        products.forEach((item) => {
-            htmlString += `\n<tr style="text-align: center;">
-            <td>${item.fields.name}</td>
-            <td>${item.fields.price}</td>
-            <td>${item.fields.amount}</td>
-            <td>
-                <a href="decrement_amount/${item.pk}" style="text-decoration: none;">
-                    <button type="button" class="btn btn-sm btn-secondary">-</button>
-                </a>
-                <a href="increment_amount/${item.pk}" style="text-decoration: none;">
-                    <button type="button" class="btn btn-sm btn-secondary">+</button>
-                </a>
-            </td>
-            <td>${item.fields.description}</td>
-            <td>${item.fields.date_added}</td>
-            <td>
-                <a onclick="openEditModal(${item.pk}, '${item.fields.name}', ${item.fields.price}, ${item.fields.amount}, '${item.fields.description}')">
-                    <button type="button" class="btn btn-sm btn-primary">Edit</button>
-                </a>
-            </td>
-            <td>
-                <button type="button" class="btn btn-sm btn-danger" onclick="showConfirmationModal(${item.pk})">Delete</button>
-            </td>
-        </tr>` 
-        })
-        
-        document.getElementById("product_table").innerHTML = htmlString
-    }
+            document.querySelector(".row").innerHTML = "";
+            const products = await getProducts();
+            
+            products.forEach((item, index) => {
+                const productCard = `
+                    <div class="col">
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <h5 class="card-title">${item.fields.name}</h5>
+                                <p class="card-text">${item.fields.description}</p>
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">Price: ${item.fields.price}</li>
+                                <li class="list-group-item">Amount: ${item.fields.amount}</li>
+                                <li class="list-group-item">Date Added: ${item.fields.date_added}</li>
+                            </ul>
+                            <div class="card-body">
+                                <a onclick="openEditModal(${item.pk}, '${item.fields.name}', ${item.fields.price}, ${item.fields.amount}, '${item.fields.description}')">
+                                    <button type="button" class="btn btn-sm btn-primary">Edit</button>
+                                </a>
+                                <button type="button" class="btn btn-sm btn-danger" onclick="showConfirmationModal(${item.pk})">Delete</button>
+                            </div>
+                        </div>
+                    </div>`;
+                
+                const row = document.querySelector(".row");
+                row.innerHTML += productCard;
+
+            });
+        }
+
+        refreshProducts();
 ```
 
 7. Melakukan *refresh page* dan tombol `Delete` sudah berfungsi sesuai dengan proses yang sudah didefinisikan sebelumnya.
