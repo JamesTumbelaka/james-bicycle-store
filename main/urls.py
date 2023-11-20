@@ -1,6 +1,6 @@
 from django.urls import path
 from main.views import show_main, create_product, delete_product, edit_product
-from main.views import show_xml, show_json
+from main.views import show_xml, show_json, show_json_by_user
 from main.views import show_xml_by_id, show_json_by_id
 from main.views import register, login_user, logout_user
 from main.views import increment_amount, decrement_amount
@@ -14,6 +14,7 @@ urlpatterns = [
     path('create-product', create_product, name='create_product'),
     path('xml/', show_xml, name='show_xml'),
     path('json/', show_json, name='show_json'),
+    path('json-user/', show_json_by_user, name='show_json_by_user'),
     path('xml/<int:id>/', show_xml_by_id, name='show_xml_by_id'),
     path('json/<int:id>/', show_json_by_id, name='show_json_by_id'),
     path('edit-product/<int:id>', edit_product, name='edit_product'),
