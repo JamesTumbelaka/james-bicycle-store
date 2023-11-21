@@ -3,6 +3,9 @@ from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth import logout as auth_logout
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
+
 
 @csrf_exempt
 def login(request):
@@ -16,7 +19,8 @@ def login(request):
             return JsonResponse({
                 "username": user.username,
                 "status": True,
-                "message": "Login sukses!"
+                "message": "Login sukses!",
+                "id": user.id,
                 # Tambahkan data lainnya jika ingin mengirim data ke Flutter.
             }, status=200)
         else:
@@ -47,3 +51,22 @@ def logout(request):
         "status": False,
         "message": "Logout gagal."
         }, status=401)
+
+@csrf_exempt
+def register(request):
+    if request.method == "POST":
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        new_user = User.objects.create_user(username=username, password=password)
+            
+        return JsonResponse({
+            "status": True,
+            "message": "Account created successfully!",
+            "user_id": new_user.id,
+        }, status=200)
+    
+    return JsonResponse({
+        "status": False,
+        "message": "Invalid request method."
+    }, status=405)
